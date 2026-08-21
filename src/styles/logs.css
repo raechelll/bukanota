@@ -1,0 +1,28 @@
+/* Log activity page */
+
+.inventory-kpis,.log-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.inventory-kpis>div,.log-kpis>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;align-items:center;gap:12px}
+.inventory-kpis>div>svg,.log-kpis>div>svg{width:34px;height:34px;padding:9px;border-radius:9px;background:#e9f3ff;color:var(--blue)}
+.inventory-kpis small,.inventory-kpis strong,.log-kpis small,.log-kpis strong{display:block}
+.inventory-kpis small,.log-kpis small{font-size:8px;color:#8a96a7}
+.inventory-kpis strong,.log-kpis strong{font:700 15px Manrope;margin-top:3px}
+.log-table .data-row{grid-template-columns:.7fr 1fr .7fr 1.8fr 1fr}
+.log-table .data-row>span:first-child svg{width:12px}
+.log-table em{font-weight:700}
+.log-table em.log-login{background:#e8f2ff;color:var(--blue)}
+.log-table em.log-update{background:#fff3df;color:#b77213}
+.log-table em.log-backup{background:#eee9fb;color:#7150bc}
+.log-table em.log-restore{background:#e7f6f0;color:#168461}
+@media(max-width:900px){
+  .backup-table,.deleted-table,.log-table{min-width:820px}
+  .inventory-kpis,.log-kpis{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:720px){
+  .inventory-kpis,.log-kpis{grid-template-columns:1fr}
+  .inventory-kpis>div,.log-kpis>div{padding:12px}
+}
+.log-table.with-actions .data-row{grid-template-columns:.7fr 1fr .7fr 1.8fr 1fr 45px}
+.inventory-kpis small,.log-kpis small{font-size:10.5px}
+.inventory-kpis strong,.log-kpis strong{font-size:17px}
+.inventory-kpis small,.log-kpis small{font-size:12px}
+.inventory-kpis strong,.log-kpis strong{font-size:18.5px}

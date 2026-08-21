@@ -1,0 +1,59 @@
+/* Login / forgot password modal */
+
+.modal-backdrop{position:fixed;inset:0;background:rgba(5,22,44,.62);backdrop-filter:blur(6px);z-index:100;display:grid;place-items:center;padding:20px;animation:fade .2s}
+.login-modal{position:relative;width:min(440px,100%);background:#fff;border-radius:18px;padding:34px 38px;box-shadow:0 30px 90px rgba(0,0,0,.25);animation:up .25s}
+.modal-close{position:absolute;right:18px;top:18px;border:0;background:#f2f5f9;color:#64738a;width:32px;height:32px;border-radius:8px;display:grid;place-items:center;cursor:pointer}
+.modal-close svg{width:16px}
+.login-heading{margin:32px 0 25px}
+.login-heading>span{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.05em}
+.login-heading h2{font:700 27px Manrope;letter-spacing:-1px;margin:7px 0}
+.login-heading p{font-size:13px;color:var(--muted);margin:0}
+.login-modal form>label{display:block;font-size:11px;font-weight:700;color:#3c4d65;margin:16px 0 7px}
+.login-modal input{width:100%;height:45px;border:1px solid #d9e2ed;border-radius:8px;padding:0 12px;outline:none;color:var(--ink)}
+.login-modal input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #e8f2ff}
+.password-field{position:relative}
+.password-field button{position:absolute;right:4px;top:4px;width:37px;height:37px;border:0;background:transparent;color:#8d99aa}
+.password-field svg{width:16px}
+.login-error{font-size:10px;color:#c74343;background:#fff0f0;border-radius:6px;padding:8px 10px}
+.login-submit{width:100%;height:47px;background:var(--blue);color:#fff;border:0;border-radius:8px;display:flex;justify-content:center;align-items:center;gap:12px;font-weight:700;font-size:12px}
+.login-submit svg{width:15px}
+.demo-note{display:flex;align-items:center;gap:10px;padding:12px;background:#f0f6ff;border-radius:8px;color:#586d89;margin-top:16px}
+.demo-note svg{width:17px;color:var(--blue)}
+.demo-note span,.demo-note b{display:block;font-size:9px}
+.demo-note b{font-size:10px;color:var(--ink);margin-bottom:3px}
+@media(max-width:720px){
+  .login-modal{padding:30px 22px}
+}
+.forgot-link,.forgot-back{border:0;background:transparent;color:var(--blue);font-size:8px;font-weight:700}
+.forgot-link{margin:1px 0 12px auto;display:block}
+.forgot-back{display:flex;align-items:center;gap:5px;margin-bottom:14px}
+.forgot-back svg{width:12px}
+.recovery-options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.recovery-options button{border:1px solid #dce5ef;background:#fff;border-radius:10px;padding:12px;display:flex;align-items:center;gap:9px;text-align:left;color:#596b82}
+.recovery-options button.active{border-color:var(--blue);background:#eef6ff;color:var(--blue)}
+.recovery-options svg{width:20px}
+.recovery-options span{display:flex;flex-direction:column}
+.recovery-options b{font-size:8px}
+.recovery-options small{font-size:7px;color:#8492a5;margin-top:3px}
+.forgot-success{text-align:center;padding:15px 0}
+.forgot-success>span{width:52px;height:52px;border-radius:50%;background:#e5f7ef;color:#168361;display:grid;place-items:center;margin:0 auto}
+.forgot-success h3{font:700 15px Manrope}
+.forgot-success p{font-size:8px;color:#7a899c;line-height:1.6}
+.forgot-success button{height:36px;border:0;border-radius:8px;background:var(--blue);color:#fff;padding:0 13px;font-size:8px;font-weight:700}
+@media(max-width:720px){
+  .recovery-options{grid-template-columns:1fr}
+  .crud-fields input,.crud-fields select,.crud-fields textarea,.data-toolbar input,.catalog-head input,.status-select,.schedule-fields select,.schedule-fields input,.login-modal input{font-size:16px}
+}
+.login-heading>span{font-size:12.5px}
+.login-heading h2{font-size:29px}
+.login-heading p{font-size:14.5px}
+.login-modal form>label{font-size:13px}
+.forgot-link,.forgot-back{font-size:11px}
+.recovery-options b{font-size:11px}
+.recovery-options small{font-size:9.5px}
+.forgot-success h3{font-size:17px}
+.forgot-success p{font-size:11px}
+.forgot-success button{font-size:11px}
+.demo-note span{font-size:11px}
+.demo-note b{font-size:11.5px}
+.login-error{font-size:12px}

@@ -1,0 +1,22 @@
+/* Entity pages (payment/membership/users/accounting/orders/transactions) */
+
+.entity-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.entity-stats>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px}
+.entity-stats small,.entity-stats strong{display:block}
+.entity-stats small{font-size:7px;color:#8695a7}
+.entity-stats strong{font:700 16px Manrope;margin-top:9px}
+.entity-table .data-row{grid-template-columns:repeat(var(--columns),minmax(110px,1fr)) 45px}
+@media(max-width:900px){
+  .entity-stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:720px){
+  .workspace-metrics.expanded,.entity-stats{grid-template-columns:1fr 1fr}
+  .settings-crud-table,.entity-table,.dash-table{min-width:760px}
+}
+@media(max-width:430px){
+  .workspace-metrics.expanded,.entity-stats{grid-template-columns:1fr}
+}
+.entity-stats small{font-size:10px}
+.entity-stats strong{font-size:18px}
+.entity-stats small{font-size:11.5px}
+.entity-stats strong{font-size:20px}

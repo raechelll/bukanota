@@ -1,0 +1,29 @@
+/* Settings page */
+
+.crud-form{padding:20px 22px}
+.setting-form{padding:20px}
+.setting-section-title{margin-bottom:18px}
+.setting-section-title h3{font:700 14px Manrope;margin:0}
+.setting-section-title p{font-size:8px;color:#8795a8;margin:4px 0}
+.settings-crud-table .data-row{grid-template-columns:.7fr 1.1fr 1.5fr .8fr .6fr 45px}
+.receipt-setting{display:grid;grid-template-columns:1fr 280px}
+.receipt-preview{margin:20px;padding:25px;border:1px dashed #afbecf;border-radius:10px;text-align:center}
+.receipt-preview .brand{justify-content:center;transform:scale(.75)}
+.receipt-preview h4{font:700 12px Manrope;margin:15px 0 3px}
+.receipt-preview p,.receipt-preview small{font-size:7px;color:#8492a4}
+.receipt-preview span,.receipt-preview>strong{display:flex;justify-content:space-between;font-size:8px;padding:7px 0}
+.receipt-preview>small{display:block;margin-top:20px}
+@media(max-width:900px){
+  .receipt-setting{grid-template-columns:1fr}
+  .receipt-preview{width:min(280px,calc(100% - 30px));margin-inline:auto}
+}
+@media(max-width:720px){
+  .app-modal-header,.crud-form,.detail-modal-body{padding:16px}
+  .settings-crud-table,.entity-table,.dash-table{min-width:760px}
+}
+.receipt-preview h4{font-size:14px}
+.receipt-preview span,.receipt-preview>strong{font-size:10.5px}
+.receipt-preview p,.receipt-preview small{font-size:9.5px}
+.receipt-preview h4{font-size:15.5px}
+.receipt-preview span,.receipt-preview>strong{font-size:12px}
+.receipt-preview p,.receipt-preview small{font-size:11px}

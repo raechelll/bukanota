@@ -1,0 +1,38 @@
+/* Outlet page */
+
+.data-card,.settings-card{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.promo-table .data-row{grid-template-columns:1fr 1.5fr 1fr .5fr}
+.settings-tabs{display:flex;flex-wrap:wrap;padding:16px 16px 0;border-bottom:1px solid var(--line);gap:3px}
+.settings-tabs button{height:36px;border:0;background:transparent;color:#68778d;padding:0 11px;border-radius:7px 7px 0 0;font-size:9px;font-weight:600}
+.settings-tabs button.active{background:#eaf3ff;color:var(--blue)}
+.subtabs{display:flex;gap:5px;padding:12px 16px 0}
+.subtabs button{height:32px;border:0;background:#f2f5f9;color:#728097;border-radius:6px;padding:0 12px;font-size:9px}
+.subtabs button.active{background:var(--blue);color:#fff}
+@media(max-width:900px){
+  .settings-tabs{gap:2px}
+}
+@media(max-width:720px){
+  .settings-tabs{display:grid;grid-template-columns:repeat(3,1fr);padding:10px;gap:4px}
+  .settings-tabs button{height:auto;min-height:38px;border-radius:6px;padding:6px 4px;line-height:1.25}
+}
+@media(max-width:430px){
+  .settings-tabs{grid-template-columns:repeat(2,1fr)}
+  .subtabs{overflow-x:auto}
+}
+.inventory-subtable,.setting-demo-head{background:#fff;border:1px solid var(--line);border-radius:11px}
+.setting-demo-head{padding:16px;display:flex;align-items:center;justify-content:space-between;border-radius:11px 11px 0 0}
+.setting-demo-head h3{font:700 13px Manrope;margin:0}
+.setting-demo-head p{font-size:8px;color:#8795a7;margin:4px 0 0}
+.setting-demo-head button{height:34px;border:0;background:var(--blue);color:#fff;border-radius:7px;padding:0 11px;font-size:8px;font-weight:700;display:flex;align-items:center;gap:5px}
+.setting-demo-head button svg{width:12px}
+.promo-table.with-actions .data-row,.outlet-demo-table .data-row{grid-template-columns:1fr 1.5fr 1fr .7fr 45px}
+.settings-tabs button{font-size:12px}
+.subtabs button,.settings-layout>aside button,.profile-tabs button{font-size:11px}
+.setting-demo-head h3,.card-heading h3,.access-grid h3,.schedule-card h3{font-size:15px}
+.setting-demo-head p,.card-heading p,.schedule-card p{font-size:10.5px}
+.setting-demo-head button{font-size:11px}
+.module-tabs button,.inventory-tabs button,.settings-tabs button{font-size:13.5px}
+.subtabs button,.settings-layout>aside button,.profile-tabs button{font-size:12.5px}
+.setting-demo-head h3,.card-heading h3,.access-grid h3,.schedule-card h3{font-size:16.5px}
+.setting-demo-head p,.card-heading p,.schedule-card p,.setting-section-title p,.toggle-settings p,.permission-head p{font-size:12px}
+.setting-demo-head button,.save-button,.permission-actions button,.generic-module>div button{font-size:12.5px}

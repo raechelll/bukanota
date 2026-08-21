@@ -1,0 +1,72 @@
+/* Access control page */
+
+.access-grid>aside,.access-grid>section{background:#fff;border:1px solid var(--line);border-radius:11px;padding:17px}
+.access-grid h3{font:700 13px Manrope;margin:0 0 14px}
+.access-grid>aside>button{width:100%;height:54px;border:0;background:transparent;border-radius:8px;padding:0 9px;display:flex;align-items:center;text-align:left;gap:9px;color:#66768c}
+.access-grid>aside>button.active{background:#eaf3ff;color:var(--blue)}
+.access-grid>aside>button>span{width:29px;height:29px;background:#f0f4f9;border-radius:7px;display:grid;place-items:center}
+.access-grid>aside>button>span svg{width:14px}
+.access-grid>aside>button div{display:flex;flex-direction:column}
+.access-grid>aside>button strong{font-size:9px}
+.access-grid>aside>button small{font-size:7px;color:#91a0b2;margin-top:3px}
+.access-grid>aside>button>svg{width:13px;margin-left:auto}
+.permission-head{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:15px}
+.permission-head h3{margin-bottom:4px}
+.permission-head p{font-size:8px;color:#8b97a8;margin:0}
+.permission-head>span{height:29px;background:#e8f7f1;color:#168461;border-radius:7px;padding:0 8px;display:flex;align-items:center;gap:5px;font-size:8px}
+.permission-head>span svg{width:13px}
+.permission-list label{position:relative;display:flex;justify-content:space-between;align-items:center;padding:15px 2px;border-bottom:1px solid #edf1f6}
+.permission-list strong,.permission-list small{display:block}
+.permission-list strong{font-size:10px}
+.permission-list small{font-size:8px;color:#8996a7;margin-top:4px}
+.permission-list input{position:absolute;opacity:0}
+.permission-list label>i,.switch>i{width:34px;height:19px;background:#d9e1eb;border-radius:20px;position:relative;transition:.2s}
+.permission-list label>i:after,.switch>i:after{content:'';position:absolute;width:15px;height:15px;border-radius:50%;background:#fff;left:2px;top:2px;box-shadow:0 1px 4px rgba(0,0,0,.15);transition:.2s}
+.permission-list input:checked+i,.switch input:checked+i{background:var(--blue)}
+.permission-list input:checked+i:after,.switch input:checked+i:after{transform:translateX(15px)}
+.access-grid .save-button{margin-top:16px;margin-left:auto}
+@media(max-width:1100px){
+  .access-grid{grid-template-columns:230px 1fr}
+}
+@media(max-width:900px){
+  .access-grid{grid-template-columns:1fr}
+  .access-grid>aside{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+  .access-grid>aside h3{grid-column:1/-1}
+}
+@media(max-width:720px){
+  .access-grid>aside{grid-template-columns:1fr}
+  .permission-head{gap:10px}
+  .permission-head>span{font-size:0}
+  .permission-head>span svg{margin:0}
+}
+.permission-matrix{margin-top:13px;border:1px solid #e2e9f2;border-radius:9px;overflow:hidden}
+.permission-row{display:grid;grid-template-columns:1.5fr repeat(5,.65fr);align-items:center;min-height:47px;border-top:1px solid #e9eef5;padding:0 10px}
+.permission-row.head{border:0;background:#f5f8fb;font-size:7px;color:#7b899c;font-weight:700}
+.permission-row>b{font-size:8px}
+.permission-row label{display:grid;place-items:center}
+.permission-row input{width:15px;height:15px;accent-color:var(--blue)}
+.permission-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:14px}
+.permission-actions button{height:34px;border:1px solid #dce5ef;background:#fff;color:#5f7087;border-radius:7px;padding:0 11px;font-size:8px}
+.permission-actions button.save-button{background:var(--blue);border-color:var(--blue);color:#fff;margin:0}
+@media(max-width:720px){
+  .permission-matrix{overflow-x:auto}
+  .permission-row{min-width:620px}
+}
+.setting-demo-head h3,.card-heading h3,.access-grid h3,.schedule-card h3{font-size:15px}
+.setting-section-title p,.toggle-settings p,.permission-head p{font-size:10.5px}
+.save-button,.permission-actions button,.generic-module>div button{font-size:11px}
+.permission-row.head{font-size:10px}
+.permission-row>b{font-size:11px}
+.permission-list strong{font-size:12.5px}
+.permission-list small{font-size:10.5px}
+.access-grid>aside>button strong{font-size:11.5px}
+.access-grid>aside>button small{font-size:10px}
+.setting-demo-head h3,.card-heading h3,.access-grid h3,.schedule-card h3{font-size:16.5px}
+.setting-demo-head p,.card-heading p,.schedule-card p,.setting-section-title p,.toggle-settings p,.permission-head p{font-size:12px}
+.setting-demo-head button,.save-button,.permission-actions button,.generic-module>div button{font-size:12.5px}
+.permission-row.head{font-size:11.5px}
+.permission-row>b{font-size:12.5px}
+.permission-list strong{font-size:14px}
+.permission-list small{font-size:12px}
+.access-grid>aside>button strong{font-size:13px}
+.access-grid>aside>button small{font-size:11.5px}

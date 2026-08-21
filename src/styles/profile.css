@@ -1,0 +1,71 @@
+/* Profile page */
+
+.notification-pop,.profile-pop{position:absolute;right:0;top:43px;width:255px;background:#fff;border:1px solid #dce4ee;border-radius:11px;box-shadow:0 17px 40px rgba(22,48,80,.18);padding:12px;color:#4b5e75}
+.notification-pop>strong,.profile-pop>b{display:block;font-size:10px;margin-bottom:8px}
+.profile-pop{width:190px}
+.profile-pop small{display:block;font-size:7px;color:#8896a8;margin-top:-5px;margin-bottom:10px}
+.profile-pop button{width:100%!important;height:31px!important;border:0!important;background:transparent!important;justify-content:flex-start!important;color:#52657b!important}
+.profile-pop button svg{width:13px}
+.settings-layout>aside,.settings-layout>section,.profile-card{background:#fff;border:1px solid var(--line);border-radius:11px}
+.profile-hero{background:linear-gradient(120deg,#0c58ad,#1d77dc);border-radius:12px;padding:22px;color:#fff;display:flex;align-items:center;gap:13px}
+.profile-hero>span{width:60px;height:60px;border-radius:16px;background:rgba(255,255,255,.2);display:grid;place-items:center;font:800 18px Manrope;overflow:hidden}
+.profile-hero>span img{width:100%;height:100%;object-fit:cover}
+.profile-hero h2{font:700 18px Manrope;margin:0}
+.profile-hero p{font-size:8px;color:#cfe3fb;margin:4px 0 0}
+.profile-hero em{margin-left:auto;background:rgba(255,255,255,.15);border-radius:20px;padding:5px 9px;font-size:7px;font-style:normal}
+.profile-tabs{display:flex;overflow-x:auto;gap:4px;margin:13px 0}
+.profile-tabs button{height:35px;white-space:nowrap;border:1px solid #dce5ef;background:#fff;color:#697a91;border-radius:7px;padding:0 10px;font-size:8px}
+.profile-tabs button.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.profile-card{padding:0;overflow:hidden}
+.profile-card>.setting-form,.profile-card>.image-uploader{margin:0;padding:20px}
+.login-table .data-row{grid-template-columns:1.5fr 1.2fr 1fr .6fr}
+@media(max-width:430px){
+  .profile-hero{align-items:flex-start}
+  .profile-hero>em{display:none}
+  .profile-tabs{margin-inline:-2px}
+}
+.outlet-pop,.notification-pop,.profile-pop{top:48px;border:1px solid #dce5ef;border-radius:13px;box-shadow:0 20px 50px rgba(17,44,78,.2);animation:popoverIn .17s ease both}
+.outlet-pop::before,.notification-pop::before,.profile-pop::before{content:'';position:absolute;top:-16px;left:0;right:0;height:16px}
+.profile-pop{width:246px;padding:8px}
+.profile-pop>b,.profile-pop>small{display:none}
+.profile-pop-head{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid #e8eef5}
+.profile-pop-head>span{width:39px;height:39px;border-radius:11px;background:linear-gradient(135deg,#1269d7,#3590f3);color:#fff;display:grid;place-items:center;font:800 10px Manrope;box-shadow:0 7px 15px rgba(0,90,158),.2)}
+.profile-pop-head section{display:flex;flex-direction:column}
+.profile-pop-head b{font-size:9px;color:#32465f}
+.profile-pop-head small{font-size:7px;color:#8290a3;margin:2px 0}
+.profile-pop-head em{font-size:6px;font-style:normal;color:var(--blue);font-weight:700}
+.profile-pop nav{padding:5px 0}
+.profile-pop nav button{height:49px!important;padding:0 8px!important;gap:9px;border-radius:8px!important}
+.profile-pop nav button:hover{background:#f2f7fd!important}
+.profile-pop nav button>span{width:29px;height:29px;border-radius:8px;background:#edf4fd;color:var(--blue);display:grid;place-items:center}
+.profile-pop nav button>span svg{width:13px}
+.profile-pop nav button section{display:flex;flex-direction:column;text-align:left}
+.profile-pop nav button section b{font-size:8px}
+.profile-pop nav button section small{font-size:7px;color:#8d99aa;margin-top:3px}
+.profile-pop nav button>svg{margin-left:auto;width:11px;color:#96a4b5}
+.profile-pop .profile-logout{width:100%!important;height:37px!important;border:0!important;border-top:1px solid #e9eef4!important;border-radius:0 0 8px 8px!important;background:transparent!important;color:#c24b4b!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;padding:5px 9px 0!important;font-size:8px;font-weight:700}
+.profile-logout:hover{background:#fff4f4!important}
+.profile-logout svg{width:13px}
+@media(max-width:430px){
+  .profile-pop,.notification-pop{position:fixed;right:10px;top:66px;width:calc(100vw - 20px)}
+}
+.profile-pop nav button section{display:flex;flex-direction:column;min-width:0;flex:1;text-align:left}
+.profile-pop nav button section b,.profile-pop nav button section small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.profile-pop nav button>svg:last-child{margin-left:auto;width:12px;height:12px;color:#9aa8ba;flex:none}
+.pop-title b,.outlet-pop b,.outlet-pop>button section b,.profile-pop-head b,.profile-pop nav button section b{font-size:11.5px}
+.notification-pop p small,.profile-pop nav button section small{font-size:9.5px}
+.profile-pop-head small{font-size:9.5px}
+.profile-pop-head em{font-size:8.5px}
+.profile-pop .profile-logout{font-size:10.5px}
+.subtabs button,.settings-layout>aside button,.profile-tabs button{font-size:11px}
+.profile-hero h2{font-size:21px}
+.profile-hero p{font-size:10.5px}
+.profile-hero em{font-size:9.5px}
+.pop-title b,.outlet-pop b,.outlet-pop>button section b,.profile-pop-head b,.profile-pop nav button section b{font-size:13px}
+.notification-pop p small,.profile-pop nav button section small,.profile-pop-head small{font-size:10.5px}
+.profile-pop-head em{font-size:9.5px}
+.profile-pop .profile-logout{font-size:12px}
+.subtabs button,.settings-layout>aside button,.profile-tabs button{font-size:12.5px}
+.profile-hero h2{font-size:23px}
+.profile-hero p{font-size:12px}
+.profile-hero em{font-size:11px}

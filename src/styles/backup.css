@@ -1,0 +1,53 @@
+/* Backup & restore page */
+
+.backup-layout{display:grid;gap:14px}
+.backup-status{background:#fff;border:1px solid var(--line);border-radius:11px;padding:18px;display:flex;align-items:center;gap:13px}
+.backup-status>span{width:40px;height:40px;border-radius:9px;background:#e9f3ff;color:var(--blue);display:grid;place-items:center}
+.backup-status>span svg{width:19px}
+.backup-status small,.backup-status strong,.backup-status p{display:block}
+.backup-status small{font-size:8px;color:#8b98a9}
+.backup-status strong{font:700 12px Manrope;margin-top:3px}
+.backup-status p{font-size:8px;color:#8996a7;margin:4px 0 0}
+.backup-status>em{margin-left:auto;font-style:normal;color:#168461;background:#e7f6f0;border-radius:20px;padding:5px 9px;display:flex;align-items:center;gap:5px;font-size:8px}
+.backup-status>em svg{width:11px}
+.backup-table .data-row{grid-template-columns:1.7fr 1fr .7fr .7fr 1fr}
+.backup-table .data-row>span:first-child svg{width:13px;color:var(--blue)}
+.schedule-card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:21px}
+.schedule-card>div:first-child{display:flex;align-items:center;gap:12px}
+.schedule-card>div:first-child>svg{width:36px;height:36px;padding:9px;border-radius:9px;background:#e9f3ff;color:var(--blue)}
+.schedule-card h3{font:700 13px Manrope;margin:0}
+.schedule-card p{font-size:8px;color:#8a97a8;margin:3px 0}
+.schedule-fields{display:grid!important;grid-template-columns:repeat(3,1fr);gap:12px!important;margin:25px 0}
+.schedule-fields label{font-size:8px;font-weight:700;color:#56677e}
+.schedule-fields select,.schedule-fields input{display:block;width:100%;height:37px;border:1px solid #dce4ee;border-radius:7px;background:#fff;padding:0 9px;margin-top:7px;font-size:9px;color:#5f7088}
+@media(max-width:900px){
+  .backup-table,.deleted-table,.log-table{min-width:820px}
+}
+@media(max-width:720px){
+  .schedule-fields{grid-template-columns:1fr}
+  .backup-status{align-items:flex-start}
+  .backup-status>em{font-size:0}
+  .backup-status>em svg{margin:0}
+  .crud-fields input,.crud-fields select,.crud-fields textarea,.data-toolbar input,.catalog-head input,.status-select,.schedule-fields select,.schedule-fields input,.login-modal input{font-size:16px}
+}
+@media(min-width:721px){
+  .schedule-fields select,.schedule-fields input{font-size:12px}
+}
+.setting-demo-head h3,.card-heading h3,.access-grid h3,.schedule-card h3{font-size:15px}
+.setting-demo-head p,.card-heading p,.schedule-card p{font-size:10.5px}
+.backup-status small,.backup-status p{font-size:10.5px}
+.backup-status strong{font-size:14px}
+.backup-status>em{font-size:11px}
+.schedule-fields label{font-size:10.5px}
+@media(min-width:721px){
+  .schedule-fields select,.schedule-fields input{font-size:13px}
+}
+.setting-demo-head h3,.card-heading h3,.access-grid h3,.schedule-card h3{font-size:16.5px}
+.setting-demo-head p,.card-heading p,.schedule-card p,.setting-section-title p,.toggle-settings p,.permission-head p{font-size:12px}
+.backup-status small,.backup-status p{font-size:12px}
+.backup-status strong{font-size:15.5px}
+.backup-status>em{font-size:12.5px}
+.schedule-fields label{font-size:12px}
+@media(max-width:720px){
+  .back-button,.pos-header-actions button,.module-title>button,.welcome-row button,.backup-status>em{font-size:0}
+}

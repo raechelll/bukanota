@@ -1,0 +1,6 @@
+/* Deleted data page */
+
+.deleted-table .data-row{grid-template-columns:.7fr 1.2fr 1fr 1fr 1.5fr}
+@media(max-width:900px){
+  .backup-table,.deleted-table,.log-table{min-width:820px}
+}

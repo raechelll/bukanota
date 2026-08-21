@@ -1,0 +1,64 @@
+/* Checkout page */
+
+.checkout-page{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:18px;padding:24px;align-items:start;width:100%;max-width:1180px;margin:0 auto}
+.checkout-panel{background:#fff;border:1px solid #e3eaf3;border-radius:14px;padding:20px}
+.checkout-head small{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8d9aab}
+.checkout-head h2{font:700 17px Manrope;color:#22374e;margin-top:5px}
+.checkout-head h3{font:700 13px Manrope;color:#22374e;margin-top:5px}
+.checkout-head span{display:block;font-size:8px;color:#8d9aab;margin-top:4px}
+.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.method-card{border:1px solid #dce5ef;background:#fff;border-radius:10px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:9px;font-weight:700;color:#425a74;cursor:pointer;transition:.15s}
+.method-card svg{width:20px;height:20px;color:#68788e}
+.method-card:hover{border-color:#9bc0ef}
+.method-card.active{border-color:var(--blue);background:#e9f3ff;color:var(--blue)}
+.method-card.active svg{color:var(--blue)}
+.method-card:disabled{opacity:.45;cursor:not-allowed}
+.checkout-table{margin-top:14px}
+.checkout-recap{padding:12px 0 0;margin-top:10px;border-top:1px solid #e5ebf3;background:transparent}
+@media(max-width:900px){
+  .checkout-page{grid-template-columns:1fr}
+}
+.method-grid{grid-template-columns:repeat(2,1fr)}
+.method-card{flex-direction:row;justify-content:flex-start;text-align:left;padding:12px;gap:10px;border-radius:11px}
+.method-card svg{width:16px;height:16px}
+.method-icon{width:34px;height:34px;flex:none;border-radius:9px;background:#eef4fc;color:#68788e;display:grid;place-items:center;transition:.15s}
+.method-card.active .method-icon{background:#d7e8ff;color:var(--blue)}
+.method-card section{display:flex;flex-direction:column;min-width:0}
+.method-card b{font-size:10px;color:#22374e}
+.method-card small{font-size:7px;color:#8d9aab;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.method-card.active b{color:var(--blue)}
+.method-check{width:17px;height:17px;margin-left:auto;flex:none;border-radius:50%;border:1.5px solid #cdd8e5;display:grid;place-items:center;color:transparent;transition:.15s}
+.method-card.active .method-check{border-color:var(--blue);background:var(--blue);color:#fff}
+.method-check svg{width:10px;height:10px}
+.checkout-page .method-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px}
+.checkout-page .method-card{display:flex!important;flex-direction:row!important;align-items:center;text-align:left;padding:12px!important;gap:11px;border-radius:11px}
+.checkout-page .method-card>span.method-icon{width:36px;height:36px;flex:none;border-radius:9px;background:#eef4fc;color:#5b7ba0;display:grid;place-items:center}
+.checkout-page .method-card>span.method-icon svg{width:17px;height:17px;margin:0}
+.checkout-page .method-card>section{display:flex!important;flex-direction:column;min-width:0;flex:1}
+.checkout-page .method-card>section b{font-size:10.5px;font-weight:800;color:#22374e;line-height:1.3}
+.checkout-page .method-card>section small{font-size:7.5px;color:#8d9aab;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.checkout-page .method-card>i.method-check{width:18px;height:18px;margin-left:auto;flex:none;border-radius:50%;border:1.5px solid #cdd8e5;background:#fff;display:grid;place-items:center;color:transparent;font-style:normal}
+.checkout-page .method-card>i.method-check svg{width:10px;height:10px}
+.checkout-page .method-card:hover{border-color:#9bc0ef;background:#fbfdff}
+.checkout-page .method-card.active{border-color:var(--blue);background:#f2f8ff;box-shadow:0 6px 18px rgba(0,90,158),.12)}
+.checkout-page .method-card.active>span.method-icon{background:#d7e8ff;color:var(--blue)}
+.checkout-page .method-card.active>section b{color:var(--blue)}
+.checkout-page .method-card.active>i.method-check{border-color:var(--blue);background:var(--blue);color:#fff}
+@media(max-width:430px){
+  .checkout-page{padding:16px 13px}
+  .checkout-panel{padding:15px}
+}
+.checkout-head small{font-size:10px}
+.checkout-head h2{font-size:20px}
+.checkout-head h3{font-size:15px}
+.checkout-head span{font-size:10.5px}
+.method-card{font-size:11.5px}
+.checkout-page .method-card>section b{font-size:13px}
+.checkout-page .method-card>section small{font-size:10px}
+.checkout-head small{font-size:11.5px}
+.checkout-head h2{font-size:22px}
+.checkout-head h3{font-size:16.5px}
+.checkout-head span{font-size:12px}
+.method-card{font-size:13px}
+.checkout-page .method-card>section b{font-size:14px}
+.checkout-page .method-card>section small{font-size:11.5px}
