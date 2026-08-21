@@ -7,7 +7,7 @@ import {
   Crop, ImagePlus, ListFilter, LockKeyhole, LogOut, Mail, Menu, MessageCircle, Minus, Package, Pencil, Plus, ReceiptText,
   RefreshCcw, RotateCcw, RotateCw, Save, Search, Settings2, ShieldCheck, ShoppingBag,
   ShoppingCart, Smartphone, Sparkles, Store, Trash2, Truck, Upload,
-  UserCog, UserRound, Users, UtensilsCrossed, WalletCards, X, ZoomIn,
+  UserCog, UserRound, Users, UtensilsCrossed, WalletCards, X, ZoomIn, Printer,
 } from 'lucide-react'
 import './App.css'
 
@@ -127,6 +127,15 @@ function Toast({ toast, onClose }) {
   return <div className={`app-toast ${toast.type || 'success'}`}><span>{toast.type === 'error' ? <X /> : <Check />}</span><div><b>{toast.type === 'error' ? 'Terjadi kesalahan' : 'Berhasil'}</b><p>{toast.message}</p></div><button onClick={onClose}><X /></button></div>
 }
 
+function useHoverPopover(delay = 180) {
+  const [open, setOpen] = useState(false)
+  const timer = useRef(null)
+  const enter = () => { clearTimeout(timer.current); setOpen(true) }
+  const leave = () => { clearTimeout(timer.current); timer.current = setTimeout(() => setOpen(false), delay) }
+  useEffect(() => () => clearTimeout(timer.current), [])
+  return [open, { onMouseEnter: enter, onMouseLeave: leave }, setOpen]
+}
+
 function RowActions({ onAction, extended = false }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
@@ -168,18 +177,31 @@ function LandingPage({ onLogin, navigate }) {
 }
 
 const adminMenu = [
-  { label: 'Operasional', items: [['Dashboard', '/app/dashboard', Grid2X2], ['POS', '/app/pos', ShoppingCart], ['Payment', '/app/payment', CreditCard], ['Membership', '/app/membership', Users]] },
+  { label: 'Operasional', items: [['Dashboard', '/app/dashboard', Grid2X2], ['Transaksi', '/app/transactions', ShoppingCart], ['Payment', '/app/payment', CreditCard], ['Membership', '/app/membership', Users]] },
   { label: 'Bisnis', items: [['Manajemen Stok', '/app/inventory', Package], ['Akuntansi & Pembukuan', '/app/accounting', BookOpen], ['User', '/app/users', UserRound], ['Outlet', '/app/outlet', Building2]] },
-  { label: 'Sistem', items: [['Log Aktivitas', '/app/logs', Activity], ['Backup', '/app/backup', Database], ['Hak Akses', '/app/access', UserCog], ['Setting', '/app/settings', Settings2], ['Profile', '/app/profile', UserRound], ['Deleted Data', '/app/deleted', Trash2]] },
+  { label: 'Sistem', items: [['Log Aktivitas', '/app/logs', Activity], ['Backup', '/app/backup', Database], ['Hak Akses', '/app/access', UserCog], ['Setting', '/app/settings', Settings2], ['Deleted Data', '/app/deleted', Trash2]] },
 ]
 
-function AdminShell({ route, navigate, onLogout, openModal, children }) {
+function GlobalSearch({ navigate }) {
+  const [query, setQuery] = useState('')
+  const [open, setOpen] = useState(false)
+  const results = adminMenu.flatMap(g => g.items).filter(([name]) => name.toLowerCase().includes(query.trim().toLowerCase()))
+  return <div className="global-search">
+    <Search />
+    <input value={query} placeholder="Cari produk, transaksi, member..." onChange={(e)=>{setQuery(e.target.value); setOpen(true)}} onFocus={()=>setOpen(true)} onBlur={()=>setTimeout(()=>setOpen(false),120)} onKeyDown={(e)=>{ if(e.key==='Escape'){ setOpen(false); e.target.blur() } }} />
+    {open && query.trim() ? <div className="search-pop">
+      {results.length ? results.map(([name, path, Icon]) => <button key={path} onMouseDown={()=>{navigate(path); setQuery(''); setOpen(false)}}><Icon /><section><b>{name}</b><small>Buka halaman {name}</small></section></button>) : <p>Tidak ada hasil untuk "{query}"</p>}
+    </div> : <kbd>⌘ K</kbd>}
+  </div>
+}
+
+function AdminShell({ route, navigate, onLogout, children }) {
   const [open, setOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const [expanded, setExpanded] = useState({ Operasional: true, Bisnis: true, Sistem: true })
-  const [notifications, setNotifications] = useState(false)
-  const [profile, setProfile] = useState(false)
-  const [outletOpen, setOutletOpen] = useState(false)
+  const [notifications, hoverNotifications, setNotifications] = useHoverPopover()
+  const [profile, hoverProfile, setProfile] = useHoverPopover()
+  const [outletOpen, hoverOutlet, setOutletOpen] = useHoverPopover()
   const [selectedOutlet, setSelectedOutlet] = useState('Outlet Kemang')
   const [dark, setDark] = useState(false)
   useEffect(() => { document.documentElement.dataset.theme = dark ? 'dark' : 'light'; return () => { delete document.documentElement.dataset.theme } }, [dark])
@@ -187,22 +209,21 @@ function AdminShell({ route, navigate, onLogout, openModal, children }) {
   return <div className={`admin-app ${collapsed ? 'sidebar-collapsed' : ''}`}>
     <aside className={open ? 'admin-sidebar open' : 'admin-sidebar'}>
       <div className="admin-brand"><Logo light /><button className="desktop-collapse" onClick={() => setCollapsed(!collapsed)} aria-label="Collapse sidebar"><ChevronRight /></button><button className="mobile-close" onClick={() => setOpen(false)}><X /></button></div>
-      <div className="admin-nav-scroll">{adminMenu.map(group => <div className="admin-group" key={group.label}><button className="group-toggle" onClick={() => setExpanded(s => ({ ...s, [group.label]: !s[group.label] }))}><span>{group.label}</span><ChevronDown className={expanded[group.label] ? 'open' : ''} /></button>{expanded[group.label] && <nav>{group.items.map(([name, path, Icon]) => <button title={name} key={path} className={route === path ? 'active' : ''} onClick={() => { navigate(path); setOpen(false) }}><Icon /><span>{name}</span>{name === 'Payment' && <em>12</em>}</button>)}</nav>}</div>)}</div>
-      <div className="admin-account"><span>AD</span><div><strong>Admin Demo</strong><small>Super Admin</small></div><button onClick={onLogout} aria-label="Keluar"><LogOut /></button></div>
+      <div className="admin-nav-scroll">{adminMenu.map(group => <div className="admin-group" key={group.label}><button className="group-toggle" onClick={() => setExpanded(s => ({ ...s, [group.label]: !s[group.label] }))}><span>{group.label}</span><ChevronDown className={expanded[group.label] ? 'open' : ''} /></button>{expanded[group.label] && <nav>{group.items.map(([name, path, Icon]) => <button title={name} key={path} className={route === path ? 'active' : ''} onClick={() => { navigate(path); setOpen(false) }}><Icon /><span>{name}</span>{name === 'Payment' && <em>12</em>}</button>)}</nav>}</div>)}      </div>
     </aside>
     <main className="admin-content">
       <header className="admin-header">
         <button className="admin-menu" onClick={() => setOpen(true)}><Menu /></button>
         <div className="admin-page-name"><small>Home / {item?.[0] || 'Dashboard'}</small><h1>{item?.[0] || 'Dashboard'}</h1></div>
-        <button className="global-search" onClick={() => openModal({ type: 'form', title: 'Pencarian global', kicker: 'GLOBAL SEARCH', size: 'wide', fields: [{ name: 'search', label: 'Cari produk, transaksi, member...', placeholder: 'Ketik kata kunci', wide: true }] })}><Search /><span>Cari produk, transaksi, member...</span><kbd>⌘ K</kbd></button>
+        <GlobalSearch navigate={navigate} />
         <div className="admin-actions">
-          <div className="header-popover outlet-popover" onMouseEnter={() => setOutletOpen(true)} onMouseLeave={() => setOutletOpen(false)}>
+          <div className="header-popover outlet-popover" {...hoverOutlet}>
             <button className="outlet-selector" onClick={() => setOutletOpen(!outletOpen)}><span className="outlet-icon"><Building2 /></span><span className="outlet-copy"><small>Outlet aktif</small><b>{selectedOutlet.replace('Outlet ', '')}</b></span><ChevronDown /></button>
             {outletOpen && <div className="outlet-pop"><div><span><Building2 /></span><section><b>Pilih outlet</b><small>Data mengikuti outlet aktif</small></section></div>{['Outlet Kemang','Outlet Cilandak','Semua Outlet'].map(name => <button className={selectedOutlet === name ? 'active' : ''} key={name} onClick={() => { setSelectedOutlet(name); setOutletOpen(false) }}><span>{name.slice(0,2).toUpperCase()}</span><section><b>{name}</b><small>{name === 'Semua Outlet' ? 'Ringkasan seluruh bisnis' : 'Online · Jakarta'}</small></section>{selectedOutlet === name && <Check />}</button>)}</div>}
           </div>
           <button className="theme-button" onClick={() => setDark(!dark)} title="Ganti tema">{dark ? '☀' : '◐'}</button>
-          <div className="header-popover" onMouseEnter={() => setNotifications(true)} onMouseLeave={() => setNotifications(false)}><button onClick={() => setNotifications(!notifications)}><Bell /><i></i></button>{notifications && <div className="notification-pop"><div className="pop-title"><span><Bell /></span><section><b>Notifikasi</b><small>3 informasi terbaru</small></section></div><p><Package /><span><b>Stok hampir habis</b><small>Susu UHT tersisa 8 pcs</small></span></p><p><CreditCard /><span><b>Pembayaran berhasil</b><small>INV-1042 · Rp 162.000</small></span></p><p><Database /><span><b>Backup selesai</b><small>Hari ini, 02:00 WIB</small></span></p></div>}</div>
-          <div className="header-popover" onMouseEnter={() => setProfile(true)} onMouseLeave={() => setProfile(false)}><button className="header-avatar" onClick={() => setProfile(!profile)}>AD</button>{profile && <div className="profile-pop"><div className="profile-pop-head"><span>AD</span><section><b>Admin Demo</b><small>admin@gmail.com</small><em>Super Admin</em></section></div><nav><button onClick={() => navigate('/app/profile')}><span><UserRound /></span><section><b>Profile</b><small>Informasi akun</small></section><ChevronRight /></button><button onClick={() => navigate('/app/settings')}><span><Settings2 /></span><section><b>Setting</b><small>Preferensi aplikasi</small></section><ChevronRight /></button></nav><button className="profile-logout" onClick={onLogout}><LogOut /> Logout dari akun</button></div>}</div>
+          <div className="header-popover" {...hoverNotifications}><button onClick={() => setNotifications(!notifications)}><Bell /><i></i></button>{notifications && <div className="notification-pop"><div className="pop-title"><span><Bell /></span><section><b>Notifikasi</b><small>3 informasi terbaru</small></section></div><p><Package /><span><b>Stok hampir habis</b><small>Susu UHT tersisa 8 pcs</small></span></p><p><CreditCard /><span><b>Pembayaran berhasil</b><small>INV-1042 · Rp 162.000</small></span></p><p><Database /><span><b>Backup selesai</b><small>Hari ini, 02:00 WIB</small></span></p></div>}</div>
+          <div className="header-popover" {...hoverProfile}><button className="header-avatar" onClick={() => setProfile(!profile)}>AD</button>{profile && <div className="profile-pop"><div className="profile-pop-head"><span>AD</span><section><b>Admin Demo</b><small>admin@gmail.com</small><em>Super Admin</em></section></div><nav><button onClick={() => navigate('/app/profile')}><span><UserRound /></span><section><b>Profile</b><small>Informasi akun</small></section><ChevronRight /></button><button onClick={() => navigate('/app/settings')}><span><Settings2 /></span><section><b>Setting</b><small>Preferensi aplikasi</small></section><ChevronRight /></button></nav><button className="profile-logout" onClick={onLogout}><LogOut /> Logout dari akun</button></div>}</div>
         </div>
       </header>
       {children}
@@ -215,35 +236,111 @@ function DashboardPage({ navigate }) {
   return <div className="workspace dashboard-workspace"><div className="welcome-row"><div><h2>Selamat siang, Admin</h2><p>Berikut ringkasan performa seluruh outlet hari ini.</p></div><div className="dashboard-filters"><button>7 hari <ChevronDown /></button><button><CalendarClock /> Custom date</button><button className="primary" onClick={() => navigate('/app/pos')}><Plus /> Transaksi baru</button></div></div><div className="workspace-metrics expanded">{metrics.map(([n,v,g,Icon],i)=><div key={n}><span className={`metric-icon m-${i%4}`}><Icon /></span><small>{n}</small><strong>{v}</strong><em className={g.startsWith('-')?'down':''}>{g.startsWith('-')?'↓':'↗'} {g} <i>dari kemarin</i></em></div>)}</div><div className="dashboard-chart-grid"><div className="sales-panel"><div className="panel-head"><div><strong>Grafik penjualan</strong><small>Penjualan seluruh outlet · 7 hari</small></div><button>7 hari <ChevronDown /></button></div><div className="sales-total"><strong>Rp 28.640.000</strong><span>↗ 10,4%</span></div><div className="line-chart"><svg viewBox="0 0 700 190" preserveAspectRatio="none"><defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#1770df" stopOpacity=".22"/><stop offset="1" stopColor="#1770df" stopOpacity="0"/></linearGradient></defs><path className="area" d="M0 145 C60 120,90 150,145 110 S230 130,280 80 S370 105,420 58 S510 78,560 42 S650 70,700 22 L700 190 L0 190Z"/><path d="M0 145 C60 120,90 150,145 110 S230 130,280 80 S370 105,420 58 S510 78,560 42 S650 70,700 22"/><circle cx="700" cy="22" r="5"/></svg><div>{['Sen','Sel','Rab','Kam','Jum','Sab','Min'].map(d=><span key={d}>{d}</span>)}</div></div></div><div className="donut-panel"><div className="panel-head"><div><strong>Metode pembayaran</strong><small>Distribusi transaksi</small></div></div><div className="donut-wrap"><div className="donut-chart"><strong>1.284<small>transaksi</small></strong></div><div>{[['Cash','38%'],['QRIS','32%'],['Transfer','14%'],['E-Wallet','10%'],['Kartu','6%']].map((r,i)=><p key={r[0]}><i className={`d-${i}`}></i><span>{r[0]}</span><b>{r[1]}</b></p>)}</div></div></div></div><div className="dashboard-lists"><div className="quick-panel"><div className="panel-head"><div><strong>Produk terlaris</strong><small>Berdasarkan jumlah terjual</small></div><button>Lihat semua</button></div>{[['KS','Kopi Susu Aren','186','Rp 4,09 jt'],['ML','Matcha Latte','142','Rp 3,69 jt'],['RB','Rice Bowl Ayam','98','Rp 3,13 jt']].map(r=><div className="top-product" key={r[1]}><span>{r[0]}</span><div><b>{r[1]}</b><small>{r[2]} terjual</small></div><strong>{r[3]}</strong></div>)}</div><div className="quick-panel"><div className="panel-head"><div><strong>Stok hampir habis</strong><small>Perlu segera diisi ulang</small></div><button onClick={()=>navigate('/app/inventory')}>Inventori</button></div>{[['Susu UHT 1L','8','12'],['Sirup Aren','4','10'],['Cup 12 oz','18','30']].map(r=><div className="low-stock" key={r[0]}><div><b>{r[0]}</b><small>Minimum {r[2]}</small></div><span>{r[1]} tersisa</span></div>)}</div><div className="quick-panel"><div className="panel-head"><div><strong>Aktivitas terbaru</strong><small>Diperbarui real-time</small></div></div>{[['AD','Admin menambah produk','2 menit lalu'],['KS','Kasir membuat transaksi','5 menit lalu'],['ST','Stok Susu UHT diubah','12 menit lalu'],['DB','Backup otomatis dibuat','1 jam lalu']].map(r=><div className="activity-mini" key={r[1]}><span>{r[0]}</span><div><b>{r[1]}</b><small>{r[2]}</small></div></div>)}</div></div><div className="dashboard-transactions data-card"><div className="card-heading"><h3>Transaksi terbaru</h3><p>Transaksi dari seluruh outlet</p></div><div className="data-table dash-table"><div className="data-row data-head"><span>Invoice</span><span>Customer</span><span>Kasir</span><span>Outlet</span><span>Total</span><span>Payment</span><span>Status</span></div>{[['INV-20260820-001','Andi Wijaya','Rina','Kemang','Rp 162.000','QRIS'],['INV-20260820-002','Sarah Putri','Doni','Cilandak','Rp 84.000','Cash'],['INV-20260820-003','Kevin Lim','Rina','Kemang','Rp 126.000','Debit']].map(r=><div className="data-row" key={r[0]}>{r.map((v,i)=><span key={v}>{i===0?<b>{v}</b>:i===6?<em>Paid</em>:v}</span>)}</div>)}</div></div></div>
 }
 
+function TransaksiPage({ navigate, openModal, notify }) {
+  const [addOpen, setAddOpen] = useState(false)
+  const [tab, setTab] = useState('Orderan')
+  const [status, setStatus] = useState('Semua')
+  const orders = [['INV-20260820-001','Andi Wijaya','Kemang','Rp 162.000','Paid'],['INV-20260820-002','Sarah Putri','Cilandak','Rp 84.000','Paid'],['INV-20260820-003','Kevin Lim','Kemang','Rp 126.000','Pending']]
+  const [reservasi, setReservasi] = useState([
+    ['RSV-20260821-001','Raisa Amelia','21 Agu 2026 · 19:00','4 orang','Meja 04','Confirmed'],
+    ['RSV-20260821-002','Budi Santoso','22 Agu 2026 · 12:30','2 orang','Meja 01','Waiting'],
+    ['RSV-20260820-003','Dewi Lestari','20 Agu 2026 · 18:00','6 orang','Meja 07','Confirmed'],
+  ])
+  const reservasiModal = () => { setAddOpen(false); openModal({ type: 'form', title: 'Tambah reservasi', kicker: 'RESERVASI', size: 'wide', fields: [{ name: 'name', label: 'Nama pelanggan', required: true }, { name: 'phone', label: 'No. telepon', placeholder: '0812...' }, { name: 'date', label: 'Tanggal', type: 'date' }, { name: 'time', label: 'Jam', type: 'time' }, { name: 'people', label: 'Jumlah orang', type: 'number' }, { name: 'table', label: 'Meja', type: 'select', options: ['Meja 01','Meja 02','Meja 03','Meja 04','Meja 05'] }, { name: 'note', label: 'Catatan', type: 'textarea', wide: true }], success: 'Reservasi berhasil ditambahkan', onConfirm: (data) => setReservasi(rows => [[`RSV-${Date.now()}`, data.name, `${data.date || '-'} · ${data.time || '-'}`, `${data.people || 2} orang`, data.table, 'Confirmed'], ...rows]) }) }
+  return <div className="module-page">
+    <div className="module-title"><div><span>TRANSAKSI</span><h2>Transaksi</h2><p>Kelola orderan, reservasi, dan riwayat transaksi outlet.</p></div>
+      <div className="add-wrap">
+        <button className={addOpen ? 'open' : ''} onClick={()=>setAddOpen(v=>!v)}><Plus /> Tambah <ChevronDown /></button>
+        {addOpen && <><div className="add-backdrop" onClick={()=>setAddOpen(false)}></div><div className="add-menu">
+          <button onClick={()=>navigate('/app/pos')}><ShoppingCart /><section><b>Orderan baru</b><small>Buat transaksi lewat kasir POS</small></section><ArrowRight /></button>
+          <button onClick={reservasiModal}><CalendarClock /><section><b>Reservasi</b><small>Catat reservasi meja pelanggan</small></section><ArrowRight /></button>
+        </div></>}
+      </div>
+    </div>
+    <div className="module-tabs">{['Orderan','Reservasi'].map(t => <button key={t} className={tab === t ? 'active' : ''} onClick={()=>{setTab(t); setStatus('Semua')}}>{t}</button>)}</div>
+    {tab === 'Orderan' ? <div className="data-card"><div className="data-toolbar"><label><Search /><input placeholder="Cari invoice atau customer" /></label><select className="status-select" value={status} onChange={(e)=>setStatus(e.target.value)}>{['Semua','Paid','Pending'].map(s => <option key={s} value={s}>{s === 'Semua' ? 'Semua status' : s}</option>)}</select><button><Download /> Export</button></div>
+      <table className="list-table"><thead><tr><th>Invoice</th><th>Customer</th><th>Outlet</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody>{orders.filter(r => status === 'Semua' || r[4] === status).map(r => <tr key={r[0]}><td><b>{r[0]}</b></td><td>{r[1]}</td><td>{r[2]}</td><td><b>{r[3]}</b></td><td><em className={r[4]==='Pending'?'warning':''}>{r[4]}</em></td><td><RowActions onAction={(a)=>a==='detail'?openModal({type:'detail',title:'Detail transaksi',name:r[1],initials:r[1].slice(0,2).toUpperCase(),description:`Invoice ${r[0]}`,data:{Invoice:r[0],Outlet:r[2],Total:r[3],Status:r[4]}}):a==='edit'?notify('Transaksi yang sudah dibayar tidak bisa diubah','warning'):openModal({type:'confirm',title:'Refund transaksi',message:`Refund ${r[0]}?`,success:'Refund berhasil diproses'})} /></td></tr>)}
+          {!orders.some(r => status === 'Semua' || r[4] === status) && <tr><td colSpan={6} className="empty-row">Tidak ada transaksi dengan status ini.</td></tr>}
+        </tbody>
+      </table>
+    </div> : <div className="data-card"><div className="data-toolbar"><label><Search /><input placeholder="Cari nama atau kode reservasi" /></label><select className="status-select" value={status} onChange={(e)=>setStatus(e.target.value)}>{['Semua','Confirmed','Waiting'].map(s => <option key={s} value={s}>{s === 'Semua' ? 'Semua status' : s}</option>)}</select><button><Download /> Export</button></div>
+      <table className="list-table"><thead><tr><th>Kode</th><th>Pelanggan</th><th>Waktu</th><th>Jumlah</th><th>Meja</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody>{reservasi.filter(r => status === 'Semua' || r[5] === status).map(r => <tr key={r[0]}><td><b>{r[0]}</b></td><td>{r[1]}</td><td>{r[2]}</td><td>{r[3]}</td><td>{r[4]}</td><td><em className={r[5]==='Waiting'?'warning':''}>{r[5]}</em></td><td><RowActions onAction={(a)=>a==='detail'?openModal({type:'detail',title:'Detail reservasi',name:r[1],initials:r[1].slice(0,2).toUpperCase(),description:`Kode ${r[0]}`,data:{Waktu:r[2],Jumlah:r[3],Meja:r[4],Status:r[5]}}):a==='edit'?notify('Buka form tambah untuk reservasi baru','info'):openModal({type:'confirm',title:'Batalkan reservasi',message:`Batalkan reservasi ${r[1]}?`,success:'Reservasi berhasil dibatalkan'})} /></td></tr>)}
+          {!reservasi.some(r => status === 'Semua' || r[5] === status) && <tr><td colSpan={7} className="empty-row">Tidak ada reservasi dengan status ini.</td></tr>}
+        </tbody>
+      </table>
+    </div>}
+  </div>
+}
+
 const posProducts = [
-  ['Kopi Susu Aren', 'Kopi', 22000, 'KS'], ['Americano', 'Kopi', 18000, 'AM'], ['Matcha Latte', 'Minuman', 26000, 'ML'], ['Chocolate', 'Minuman', 24000, 'CH'], ['Rice Bowl Ayam', 'Makanan', 32000, 'RB'], ['Croissant', 'Makanan', 18000, 'CR'], ['Nasi Goreng', 'Makanan', 28000, 'NG'], ['Es Teh Lemon', 'Minuman', 16000, 'TL'],
+  ['Kopi Susu Aren', 'Kopi', 22000, 'KS', 'https://akcdn.detik.net.id/community/media/visual/2024/10/16/es-kopi-susu-gula-aren.jpeg?w=650'], ['Americano', 'Kopi', 18000, 'AM'], ['Matcha Latte', 'Minuman', 26000, 'ML', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbmlzV5cenuuSYMnMYxRBp2K7U9TTQOn_I6C9QTUnUFhT3-J5rz4AIDD7z&s=10'], ['Chocolate', 'Minuman', 24000, 'CH'], ['Rice Bowl Ayam', 'Makanan', 32000, 'RB', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPhimlPgWyuzBmtKAQL5IlUvEoF7Qwc1FH8Sxj_vZe0A&s=10'], ['Croissant', 'Makanan', 18000, 'CR', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp-m_xQvcEUOMX4mIQQ-k1ZnCz_FVYCbqDJUvDfSp7gQ&s=10'], ['Nasi Goreng', 'Makanan', 28000, 'NG', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUpPoLpIHF21YLKglSy9XC3GxvuP6w7v4JKyimYdu-uA&s=10'], ['Es Teh Lemon', 'Minuman', 16000, 'TL', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd7C1CrwrV6yYlIPPcspjPsS4BKHCvr1UPhp_iUjf-RQ&s=10'],
 ]
 
-function PosPage({ navigate, openModal, notify }) {
-  const [cart, setCart] = useState([{ name: 'Kopi Susu Aren', price: 22000, qty: 2 }, { name: 'Croissant', price: 18000, qty: 1 }])
+function calcTotals(cart) {
+  const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0)
+  const tax = Math.round(total * .11)
+  const service = Math.round(total * .05)
+  const rounding = Math.round((total + tax + service) / 100) * 100 - (total + tax + service)
+  return { total, tax, service, rounding, finalTotal: total + tax + service + rounding }
+}
+
+function PosPage({ navigate, openModal, notify, cart, setCart, meja, setMeja }) {
   const [category, setCategory] = useState('Semua')
+  const [orderTab, setOrderTab] = useState('Orderan')
   const add = ([name, , price]) => setCart(items => { const found = items.find(i => i.name === name); return found ? items.map(i => i.name === name ? { ...i, qty: i.qty + 1 } : i) : [...items, { name, price, qty: 1 }] })
   const qty = (name, amount) => setCart(items => items.map(i => i.name === name ? { ...i, qty: Math.max(0, i.qty + amount) } : i).filter(i => i.qty > 0))
-  const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0)
+  const { total, tax, service, rounding, finalTotal } = calcTotals(cart)
   const shown = category === 'Semua' ? posProducts : posProducts.filter(p => p[1] === category)
-  const customerModal = () => openModal({ type: 'form', title: 'Pilih customer', kicker: 'CUSTOMER / MEMBER', fields: [{ name: 'customer', label: 'Cari customer', placeholder: 'Andi Wijaya, Sarah Putri...', wide: true }, { name: 'level', label: 'Level', type: 'select', options: ['Semua','Regular','Silver','Gold','Platinum'] }], success: 'Customer berhasil dipilih' })
+  const tableModal = () => openModal({ type: 'form', title: 'Pilih meja', kicker: 'ORDERAN', fields: [{ name: 'meja', label: 'Nomor meja (boleh dikosongkan)', type: 'select', options: ['Tanpa meja', 'Meja 01', 'Meja 02', 'Meja 03', 'Meja 04', 'Meja 05', 'Meja 06', 'Meja 07', 'Meja 08'] }], success: 'Meja berhasil dipilih', onConfirm: (data) => setMeja(data.meja === 'Tanpa meja' ? null : data.meja) })
   const discountModal = () => openModal({ type: 'form', title: 'Tambah discount', kicker: 'PROMO', fields: [{ name: 'type', label: 'Tipe discount', type: 'select', options: ['Persentase','Nominal','Promo code'] }, { name: 'value', label: 'Nilai', placeholder: '10 atau 25000' }, { name: 'code', label: 'Kode promo', placeholder: 'HEMAT20', wide: true }], success: 'Discount berhasil diterapkan' })
-  const paymentModal = () => openModal({ type: 'form', title: 'Pembayaran', kicker: `TOTAL RP ${(total * 1.1).toLocaleString('id-ID')}`, size: 'wide', fields: [{ name: 'method', label: 'Metode', type: 'select', options: ['Cash','QRIS','Transfer','Debit','Credit Card','E-Wallet'] }, { name: 'received', label: 'Uang diterima', placeholder: '100000' }, { name: 'note', label: 'Catatan pembayaran', placeholder: 'Opsional', wide: true }], success: 'Pembayaran berhasil · INV-20260820-004', onConfirm: () => setCart([]) })
   return <div className="pos-page">
-    <header className="pos-page-header"><button className="back-button" onClick={() => navigate('/app/dashboard')}><ArrowLeft /> Kembali</button><div><strong>Point of Sale</strong><span><i></i>Outlet Kemang · Kasir Utama</span></div><div className="pos-header-actions"><button onClick={() => notify('Riwayat transaksi dibuka', 'info')}><History /> Riwayat</button><button onClick={() => notify('Transaksi berhasil di-hold', 'success')}><Clock3 /> Hold</button></div></header>
+    <header className="pos-page-header"><button className="back-button" onClick={() => navigate('/app/transactions')}><ArrowLeft /> Kembali</button><div><strong>Point of Sale</strong><span><i></i>Outlet Kemang · Kasir Utama</span></div><div className="pos-header-actions"><button onClick={() => notify('Riwayat transaksi dibuka', 'info')}><History /> Riwayat</button><button onClick={() => notify('Transaksi berhasil di-hold', 'success')}><Clock3 /> Hold</button></div></header>
     <main className="pos-workspace">
-      <section className="pos-catalog"><div className="catalog-head"><div><small>Transaksi baru</small><h1>Pilih produk</h1></div><label><Search /><input placeholder="Cari produk atau barcode" /></label></div><div className="category-tabs">{['Semua','Kopi','Makanan','Minuman'].map(c=><button className={category===c?'active':''} onClick={()=>setCategory(c)} key={c}>{c}</button>)}</div><div className="real-product-grid">{shown.map((p,i)=><button onClick={()=>add(p)} key={p[0]}><span className={`real-product-image rp-${i%4}`}>{p[3]}</span><strong>{p[0]}</strong><small>{p[1]} · Stok {24-i}</small><b>Rp {p[2].toLocaleString('id-ID')}</b><i><Plus /></i></button>)}</div></section>
+      <section className="pos-catalog"><div className="catalog-head"><div><small>Transaksi baru</small><h1>Pilih produk</h1></div><label><Search /><input placeholder="Cari produk atau barcode" /></label></div><div className="category-tabs">{['Semua','Kopi','Makanan','Minuman'].map(c=><button className={category===c?'active':''} onClick={()=>setCategory(c)} key={c}>{c}</button>)}</div><div className="real-product-grid">{shown.map((p,i)=><button onClick={()=>add(p)} key={p[0]}><span className={`real-product-image rp-${i%4}`}>{p[4] ? <img src={p[4]} alt={p[0]} loading="lazy" /> : p[3]}</span><strong>{p[0]}</strong><small>{p[1]} · Stok {24-i}</small><b>Rp {p[2].toLocaleString('id-ID')}</b><i><Plus /></i></button>)}</div></section>
       <aside className="real-cart">
-        <div className="real-cart-head"><div><small>Pesanan aktif</small><h2>#INV-20260820-004</h2><span>Hari ini · 13:24</span></div><RowActions extended onAction={(action)=>action==='delete'?setCart([]):notify(`Aksi ${action} pada transaksi`, 'info')} /></div>
-        <div className="order-type"><button className="active">Dine in</button><button>Takeaway</button><span><Building2 /> Meja 08</span></div>
-        <button className="choose-customer" onClick={customerModal}><span><Users /></span><div><small>Customer</small><b>Pilih Customer</b></div><ChevronRight /></button>
+        <div className="real-cart-head"><div><small>Pesanan aktif</small><h2>#INV-20260820-004</h2><span>Hari ini · 13:24</span></div><button className={meja ? 'table-head-btn has-meja' : 'table-head-btn'} aria-label="Pilih meja" title="Pilih meja" onClick={tableModal}>{meja || <UtensilsCrossed />}</button></div>
+        <div className="order-type"><button className={orderTab === 'Orderan' ? 'active' : ''} onClick={()=>setOrderTab('Orderan')}>Orderan</button><button className={orderTab === 'Detail' ? 'active' : ''} onClick={()=>setOrderTab('Detail')}>Detail</button></div>
         <div className="cart-table-head"><span>Item pesanan</span><span>{cart.reduce((sum,item)=>sum+item.qty,0)} item</span></div>
-        <div className="cart-lines">{cart.length ? cart.map(item => <div className="real-cart-item" key={item.name}>
-          <div className="cart-item-main"><span>{item.name.slice(0,2).toUpperCase()}</span><div><strong>{item.name}</strong><small>Rp {item.price.toLocaleString('id-ID')} / item</small><button onClick={() => notify(`Catatan untuk ${item.name}`, 'info')}>+ Tambah catatan</button></div><b>Rp {(item.price*item.qty).toLocaleString('id-ID')}</b></div>
-          <div className="cart-item-actions"><button aria-label={`Kurangi ${item.name}`} onClick={()=>qty(item.name,-1)}><Minus /></button><strong>{item.qty}</strong><button aria-label={`Tambah ${item.name}`} onClick={()=>qty(item.name,1)}><Plus /></button><button className="cart-delete" aria-label={`Hapus ${item.name}`} onClick={()=>setCart(items=>items.filter(i=>i.name!==item.name))}><Trash2 /></button></div>
-        </div>) : <div className="empty-cart"><ShoppingCart /><b>Keranjang masih kosong</b><span>Pilih produk untuk memulai transaksi.</span></div>}</div>
-        <div className="cart-summary"><p><span>Subtotal</span><b>Rp {total.toLocaleString('id-ID')}</b></p><p><span>Discount</span><button onClick={discountModal}>Tambah</button></p><p><span>Pajak & layanan</span><b>Rp {(total*.1).toLocaleString('id-ID')}</b></p><p className="grand-total"><span>Total</span><b>Rp {(total*1.1).toLocaleString('id-ID')}</b></p><div className="cart-tools"><button><ReceiptText /> Split bill</button><button onClick={discountModal}><Gift /> Diskon</button><button onClick={customerModal}><Users /> Member</button></div><button className="pay-button" disabled={!cart.length} onClick={paymentModal}>Bayar <span>Rp {(total*1.1).toLocaleString('id-ID')}</span><ArrowRight /></button></div>
+        <div className="cart-lines">{cart.length ? <table className="cart-table">
+          <thead><tr><th>No</th><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
+          <tbody>{cart.map((item, index) => <tr key={item.name}>
+            <td>{index + 1}</td>
+            <td><b>{item.name}</b><small>Rp {item.price.toLocaleString('id-ID')} / item</small></td>
+            <td><span className="qty-control"><button aria-label={`Kurangi ${item.name}`} onClick={()=>qty(item.name,-1)}><Minus /></button><strong>{item.qty}</strong><button aria-label={`Tambah ${item.name}`} onClick={()=>qty(item.name,1)}><Plus /></button></span></td>
+            <td>Rp {(item.price*item.qty).toLocaleString('id-ID')}</td>
+          </tr>)}</tbody>
+        </table> : <div className="empty-cart"><ShoppingCart /><b>Keranjang masih kosong</b><span>Pilih produk untuk memulai transaksi.</span></div>}</div>
+        <div className="cart-summary"><p><span>Subtotal</span><b>Rp {total.toLocaleString('id-ID')}</b></p><p><span>Diskon</span><button onClick={discountModal}>Tambah</button></p><p><span>Tax</span><b>Rp {tax.toLocaleString('id-ID')}</b></p><p><span>Service</span><b>Rp {service.toLocaleString('id-ID')}</b></p><p><span>Pembulatan</span><b>{rounding < 0 ? '-' : ''}Rp {Math.abs(rounding).toLocaleString('id-ID')}</b></p><p className="grand-total"><span>Total</span><b>Rp {finalTotal.toLocaleString('id-ID')}</b></p><div className="cart-tools"><button onClick={()=>notify('Pilih orderan untuk di-split', 'info')}><ReceiptText /> Split Bill</button><button onClick={()=>notify('Pilih orderan untuk di-join', 'info')}><FileText /> Join Bill</button><button onClick={()=>notify('Bill dikirim ke printer', 'success')}><Printer /> Print Bill</button><button onClick={()=>{setCart([]);notify('Order dibatalkan', 'info')}}><Ban /> Cancel Order</button></div><button className="pay-button" disabled={!cart.length} onClick={()=>navigate('/app/checkout')}>Bayar <span>Rp {finalTotal.toLocaleString('id-ID')}</span><ArrowRight /></button></div>
       </aside>
+    </main>
+  </div>
+}
+
+function CheckoutPage({ navigate, openModal, notify, cart, setCart, meja }) {
+  const [method, setMethod] = useState(null)
+  const { total, tax, service, rounding, finalTotal } = calcTotals(cart)
+  const methods = [['Cash', CircleDollarSign, 'Uang tunai'], ['QRIS', Grid2X2, 'Scan & pay'], ['Debit', CreditCard, 'Kartu debit'], ['Kredit', CreditCard, 'Kartu kredit'], ['E-Wallet', Smartphone, 'GoPay/OVO/DANA'], ['Transfer', Building2, 'Bank transfer']]
+  const pay = () => openModal({ type: 'form', title: 'Konfirmasi pembayaran', kicker: `${method} · RP ${finalTotal.toLocaleString('id-ID')}`, size: 'wide', fields: [{ name: 'note', label: 'Catatan / no. referensi', placeholder: 'Opsional', wide: true }], success: `Pembayaran ${method} berhasil · INV-20260820-004`, onConfirm: () => { setCart([]); navigate('/app/transactions') } })
+  return <div className="pos-page">
+    <header className="pos-page-header"><button className="back-button" onClick={()=>navigate('/app/pos')}><ArrowLeft /> Kembali</button><div><strong>Pembayaran</strong><span><i></i>Outlet Kemang · Kasir Utama</span></div><div className="pos-header-actions"><button onClick={()=>notify('Order disimpan sebagai pending', 'info')}><Clock3 /> Pending</button></div></header>
+    <main className="checkout-page">
+      <section className="checkout-panel">
+        <div className="checkout-head"><small>Ringkasan orderan</small><h2>#INV-20260820-004</h2><span>{meja || 'Tanpa meja'} · {cart.reduce((s,i)=>s+i.qty,0)} item</span></div>
+        {cart.length ? <>
+          <table className="cart-table checkout-table">
+            <thead><tr><th>No</th><th>Item</th><th>Qty</th><th>Total</th></tr></thead>
+            <tbody>{cart.map((item, index) => <tr key={item.name}><td>{index + 1}</td><td><b>{item.name}</b><small>Rp {item.price.toLocaleString('id-ID')} / item</small></td><td>{item.qty}</td><td>Rp {(item.price*item.qty).toLocaleString('id-ID')}</td></tr>)}</tbody>
+          </table>
+          <div className="cart-summary checkout-recap"><p><span>Subtotal</span><b>Rp {total.toLocaleString('id-ID')}</b></p><p><span>Tax</span><b>Rp {tax.toLocaleString('id-ID')}</b></p><p><span>Service</span><b>Rp {service.toLocaleString('id-ID')}</b></p><p><span>Pembulatan</span><b>{rounding < 0 ? '-' : ''}Rp {Math.abs(rounding).toLocaleString('id-ID')}</b></p><p className="grand-total"><span>Total</span><b>Rp {finalTotal.toLocaleString('id-ID')}</b></p></div>
+        </> : <div className="empty-cart"><ShoppingCart /><b>Belum ada orderan</b><span>Buat orderan baru lewat kasir POS.</span><button className="pay-button" onClick={()=>navigate('/app/pos')}>Ke halaman POS <ArrowRight /></button></div>}
+      </section>
+      <section className="checkout-panel">
+        <div className="checkout-head"><small>Pembayaran</small><h3>Pilih metode pembayaran</h3><span>Metode mengikuti konfigurasi outlet aktif.</span></div>
+        <div className="method-grid">{methods.map(([name, Icon, desc]) => <button key={name} className={method === name ? 'active' : ''} disabled={!cart.length} onClick={()=>setMethod(name)}><span className="method-icon"><Icon /></span><section><b>{name}</b><small>{desc}</small></section><i className="method-check"><Check /></i></button>)}</div>
+        <button className="pay-button checkout-pay" disabled={!method || !cart.length} onClick={pay}>Bayar <span>Rp {finalTotal.toLocaleString('id-ID')}</span><ArrowRight /></button>
+      </section>
     </main>
   </div>
 }
@@ -271,8 +368,21 @@ function OutletPage({ openModal }) {
 }
 
 function AccessPage({ openModal, notify }) {
-  const addRole=()=>openModal({type:'form',title:'Tambah role',kicker:'ROLE & PERMISSION',fields:[{name:'name',label:'Nama role',placeholder:'Supervisor'},{name:'description',label:'Deskripsi',type:'textarea',wide:true},{name:'copy',label:'Salin permission dari',type:'select',options:['Tidak ada','Super Admin','Admin','Manager','Kasir','Staff Gudang','Accounting']}],success:'Role berhasil ditambahkan'})
-  return <div className="module-page"><div className="module-title"><div><span>KEAMANAN</span><h2>Manajemen hak akses</h2><p>Atur permission setiap role secara terpusat.</p></div><button onClick={addRole}><Plus /> Tambah peran</button></div><div className="access-grid"><aside><h3>Daftar peran</h3>{['Super Admin','Admin','Manager','Kasir','Staff Gudang','Accounting'].map((r,i)=><button className={i===2?'active':''} key={r}><span><UserCog /></span><div><strong>{r}</strong><small>{[1,2,3,8,2,2][i]} pengguna</small></div><ChevronRight /></button>)}</aside><section><div className="permission-head"><div><h3>Manager</h3><p>Akses operasional untuk satu outlet.</p></div><span><ShieldCheck /> 18 izin aktif</span></div><div className="permission-matrix"><div className="permission-row head"><span>Module</span><span>View</span><span>Create</span><span>Edit</span><span>Delete</span><span>Export</span></div>{['Dashboard','POS','Product','Payment','Membership','Laporan'].map((module,i)=><div className="permission-row" key={module}><b>{module}</b>{['view','create','edit','delete','export'].map((p,j)=><label key={p}><input type="checkbox" defaultChecked={j===0||i<3}/><i></i></label>)}</div>)}</div><div className="permission-actions"><button onClick={()=>notify('Semua permission dipilih','info')}>Select All</button><button onClick={()=>notify('Permission direset','warning')}>Reset</button><button className="save-button" onClick={()=>notify('Permission berhasil disimpan','success')}>Simpan permission</button></div></section></div></div>
+  const modules = ['Dashboard','POS','Product','Payment','Membership','Laporan']
+  const perms = ['view','create','edit','delete','export']
+  const baseRoles = [['Super Admin',1,'Akses penuh seluruh sistem dan data.'],['Admin',2,'Kelola pengguna, outlet, dan pengaturan aplikasi.'],['Manager',3,'Akses operasional untuk satu outlet.'],['Kasir',8,'Akses kasir untuk transaksi harian.'],['Staff Gudang',2,'Kelola stok dan perpindahan barang.'],['Accounting',2,'Akses pembukuan dan laporan keuangan.']]
+  const build = (ri) => Object.fromEntries(modules.map((m,i)=>[m,perms.map((_,j)=>ri===0?true:j===0||i<3)]))
+  const [roles, setRoles] = useState(baseRoles)
+  const [role, setRole] = useState('Manager')
+  const [matrix, setMatrix] = useState(() => Object.fromEntries(baseRoles.map(([r],ri)=>[r,build(ri)])))
+  const current = roles.find(([r])=>r===role) || ['','','']
+  const roleIndex = Math.max(roles.findIndex(([r])=>r===role), 0)
+  const activeCount = modules.reduce((s,m)=>s+matrix[role][m].filter(Boolean).length,0)
+  const toggle = (mi,pi) => setMatrix(m=>({...m,[role]:{...m[role],[modules[mi]]:m[role][modules[mi]].map((v,j)=>j===pi?!v:v)}}))
+  const setAll = (val) => setMatrix(m=>({...m,[role]:Object.fromEntries(modules.map(m=>[m,perms.map(()=>val)]))}))
+  const reset = () => setMatrix(m=>({...m,[role]:build(roleIndex)}))
+  const addRole = () => openModal({type:'form',title:'Tambah role',kicker:'ROLE & PERMISSION',fields:[{name:'name',label:'Nama role',placeholder:'Supervisor',required:true},{name:'description',label:'Deskripsi',type:'textarea',wide:true},{name:'copy',label:'Salin permission dari',type:'select',options:['Tidak ada',...roles.map(([r])=>r)]}],success:'Role berhasil ditambahkan',onConfirm:(data)=>{const name=(data.name||'').trim();if(!name||roles.some(([r])=>r.toLowerCase()===name.toLowerCase()))return;setRoles(rs=>[...rs,[name,0,data.description||'Role kustom tanpa deskripsi.']]);const copyFrom=data.copy&&data.copy!=='Tidak ada'?data.copy:null;setMatrix(m=>({...m,[name]:copyFrom&&m[copyFrom]?JSON.parse(JSON.stringify(m[copyFrom])):Object.fromEntries(modules.map(mod=>[mod,perms.map(()=>false)]))}))}})
+  return <div className="module-page"><div className="module-title"><div><span>KEAMANAN</span><h2>Manajemen hak akses</h2><p>Atur permission setiap role secara terpusat.</p></div><button onClick={addRole}><Plus /> Tambah peran</button></div><div className="access-grid"><aside><h3>Daftar peran</h3>{roles.map(([r,u])=><button className={role===r?'active':''} onClick={()=>setRole(r)} key={r}><span><UserCog /></span><div><strong>{r}</strong><small>{u} pengguna</small></div><ChevronRight /></button>)}</aside><section><div className="permission-head"><div><h3>{current[0]}</h3><p>{current[2]}</p></div><span><ShieldCheck /> {activeCount} izin aktif</span></div><div className="permission-matrix"><div className="permission-row head"><span>Module</span>{perms.map(p=><span key={p}>{p[0].toUpperCase()+p.slice(1)}</span>)}</div>{modules.map((module,i)=><div className="permission-row" key={module}><b>{module}</b>{perms.map((p,j)=><label key={p}><input type="checkbox" checked={matrix[role][module][j]} onChange={()=>toggle(i,j)} /><i></i></label>)}</div>)}</div><div className="permission-actions"><button onClick={()=>setAll(true)}>Select All</button><button onClick={reset}>Reset</button><button className="save-button" onClick={()=>notify(`Permission ${role} berhasil disimpan (${activeCount} izin aktif)`,'success')}>Simpan permission</button></div></section></div></div>
 }
 
 function BackupPage({ openModal, notify }) {
@@ -345,8 +455,8 @@ function ToggleSettings({ title,items }) {
 function ProfilePage({ notify }) {
   const [tab,setTab]=useState('Personal Information')
   const [photo,setPhoto]=useState('')
-  const tabs=['Personal Information','Profile Photo','Security','Preferences','Login Activity']
-  return <div className="module-page"><div className="profile-hero"><span>{photo?<img src={photo} alt="Admin Demo"/>:'AD'}</span><div><h2>Admin Demo</h2><p>Super Admin · Outlet Kemang</p></div><em>Online</em></div><div className="profile-tabs">{tabs.map(t=><button className={tab===t?'active':''} onClick={()=>setTab(t)} key={t}>{t}</button>)}</div><div className="profile-card">{tab==='Profile Photo'?<ImageUploaderWithCrop label="Foto profile" aspect={1} value={photo} onChange={(v)=>{setPhoto(v);notify('Foto profile berhasil diperbarui','success')}} />:tab==='Security'?<div className="setting-form"><div className="setting-section-title"><h3>Ubah password</h3><p>Password pada demo hanya disimpan sementara.</p></div><div className="crud-fields"><label>Current Password<input type="password" /></label><label>New Password<input type="password" /></label><label>Confirm Password<input type="password" /></label></div><button className="save-button" onClick={()=>notify('Password demo berhasil diperbarui','success')}>Simpan password</button></div>:tab==='Login Activity'?<div className="data-table login-table"><div className="data-row data-head"><span>Device</span><span>Lokasi</span><span>Waktu</span><span>Status</span></div>{[['Chrome · Windows','Jakarta, Indonesia','Sekarang','Aktif'],['Safari · iPhone','Jakarta, Indonesia','18 Agu 2026','Selesai']].map(r=><div className="data-row" key={r[2]}>{r.map((v,i)=><span key={v}>{i===3?<em>{v}</em>:v}</span>)}</div>)}</div>:tab==='Preferences'?<ToggleSettings title="Preferensi" items={['Notifikasi email','Notifikasi WhatsApp','Mode ringkas','Suara POS']} />:<div className="setting-form"><div className="setting-section-title"><h3>Informasi personal</h3><p>Perbarui data profile yang digunakan di aplikasi.</p></div><div className="crud-fields"><label>Nama<input defaultValue="Admin Demo"/></label><label>Email<input defaultValue="admin@gmail.com"/></label><label>Telepon<input defaultValue="0812 3456 7890"/></label><label>Tanggal lahir<input type="date" defaultValue="1990-08-20"/></label><label className="wide">Alamat<textarea defaultValue="Jakarta Selatan"/></label></div><button className="save-button" onClick={()=>notify('Profile berhasil diperbarui','success')}>Simpan profile</button></div>}</div></div>
+  const tabs=['Personal Information','Security','Preferences','Login Activity']
+  return <div className="module-page"><div className="profile-hero"><span>{photo?<img src={photo} alt="Admin Demo"/>:'AD'}</span><div><h2>Admin Demo</h2><p>Super Admin · Outlet Kemang</p></div><em>Online</em></div><div className="profile-tabs">{tabs.map(t=><button className={tab===t?'active':''} onClick={()=>setTab(t)} key={t}>{t}</button>)}</div><div className="profile-card">{tab==='Security'?<div className="setting-form"><div className="setting-section-title"><h3>Ubah password</h3><p>Password pada demo hanya disimpan sementara.</p></div><div className="crud-fields"><label>Current Password<input type="password" /></label><label>New Password<input type="password" /></label><label>Confirm Password<input type="password" /></label></div><button className="save-button" onClick={()=>notify('Password demo berhasil diperbarui','success')}>Simpan password</button></div>:tab==='Login Activity'?<div className="data-table login-table"><div className="data-row data-head"><span>Device</span><span>Lokasi</span><span>Waktu</span><span>Status</span></div>{[['Chrome · Windows','Jakarta, Indonesia','Sekarang','Aktif'],['Safari · iPhone','Jakarta, Indonesia','18 Agu 2026','Selesai']].map(r=><div className="data-row" key={r[2]}>{r.map((v,i)=><span key={v}>{i===3?<em>{v}</em>:v}</span>)}</div>)}</div>:tab==='Preferences'?<ToggleSettings title="Preferensi" items={['Notifikasi email','Notifikasi WhatsApp','Mode ringkas','Suara POS']} />:<div className="setting-form"><div className="setting-section-title"><h3>Informasi personal</h3><p>Perbarui data profile yang digunakan di aplikasi.</p></div><ImageUploaderWithCrop label="Foto profile" aspect={1} value={photo} onChange={(v)=>{setPhoto(v);notify('Foto profile berhasil diperbarui','success')}} /><div className="crud-fields"><label>Nama<input defaultValue="Admin Demo"/></label><label>Email<input defaultValue="admin@gmail.com"/></label><label>Telepon<input defaultValue="0812 3456 7890"/></label><label>Tanggal lahir<input type="date" defaultValue="1990-08-20"/></label><label className="wide">Alamat<textarea defaultValue="Jakarta Selatan"/></label></div><button className="save-button" onClick={()=>notify('Profile berhasil diperbarui','success')}>Simpan profile</button></div>}</div></div>
 }
 
 function NotFoundPage({ navigate }) {
@@ -359,6 +469,8 @@ function App() {
   const [modal, setModal] = useState(null)
   const [toast, setToast] = useState(null)
   const [loggedIn, setLoggedIn] = useState(() => sessionStorage.getItem('bukanota-demo-auth') === '1')
+  const [cart, setCart] = useState([{ name: 'Kopi Susu Aren', price: 22000, qty: 2 }, { name: 'Croissant', price: 18000, qty: 1 }])
+  const [meja, setMeja] = useState(null)
   useEffect(() => { const onPop = () => setRoute(location.pathname); addEventListener('popstate', onPop); return () => removeEventListener('popstate', onPop) }, [])
   const navigate = (path) => { history.pushState({}, '', path); setRoute(path); scrollTo({ top: 0, behavior: 'smooth' }) }
   const login = () => { sessionStorage.setItem('bukanota-demo-auth', '1'); setLoggedIn(true); setLoginOpen(false); navigate('/app/dashboard') }
@@ -367,13 +479,15 @@ function App() {
   const openModal = (config) => setModal({ ...config, id: Date.now() })
   const overlays = <>{modal && <AppModal key={modal.id} modal={modal} onClose={() => setModal(null)} notify={notify} />}<Toast toast={toast} onClose={() => setToast(null)} /></>
   const publicRoutes = ['/']
-  const appRoutes = ['/app/dashboard','/app/pos','/app/payment','/app/membership','/app/inventory','/app/accounting','/app/users','/app/outlet','/app/logs','/app/backup','/app/access','/app/settings','/app/profile','/app/deleted','/app/transactions','/app/orders']
+  const appRoutes = ['/app/dashboard','/app/pos','/app/checkout','/app/payment','/app/membership','/app/inventory','/app/accounting','/app/users','/app/outlet','/app/logs','/app/backup','/app/access','/app/settings','/app/profile','/app/deleted','/app/transactions','/app/orders']
   if (!publicRoutes.includes(route) && !appRoutes.includes(route)) return <NotFoundPage navigate={navigate} />
   if (route.startsWith('/app/') && !loggedIn) return <><LandingPage onLogin={() => setLoginOpen(true)} navigate={navigate} />{loginOpen && <LoginModal onClose={() => setLoginOpen(false)} onSuccess={login} />}</>
-  if (route === '/app/pos' && loggedIn) return <><PosPage navigate={navigate} openModal={openModal} notify={notify} />{overlays}</>
+  if (route === '/app/pos' && loggedIn) return <><PosPage navigate={navigate} openModal={openModal} notify={notify} cart={cart} setCart={setCart} meja={meja} setMeja={setMeja} />{overlays}</>
+  if (route === '/app/checkout' && loggedIn) return <><CheckoutPage navigate={navigate} openModal={openModal} notify={notify} cart={cart} setCart={setCart} meja={meja} />{overlays}</>
   if (route.startsWith('/app/') && loggedIn) {
     let page = entityConfigs[route] ? <EntityPage route={route} openModal={openModal} /> : null
     if (route === '/app/dashboard') page = <DashboardPage navigate={navigate} />
+    if (route === '/app/transactions') page = <TransaksiPage navigate={navigate} openModal={openModal} notify={notify} />
     if (route === '/app/inventory') page = <InventoryPage openModal={openModal} />
     if (route === '/app/outlet') page = <OutletPage openModal={openModal} />
     if (route === '/app/access') page = <AccessPage openModal={openModal} notify={notify} />
@@ -382,7 +496,7 @@ function App() {
     if (route === '/app/logs') page = <LogsPage openModal={openModal} notify={notify} />
     if (route === '/app/settings') page = <SettingsPage openModal={openModal} notify={notify} />
     if (route === '/app/profile') page = <ProfilePage notify={notify} />
-    return <><AdminShell route={route} navigate={navigate} onLogout={logout} openModal={openModal}>{page}</AdminShell>{overlays}</>
+    return <><AdminShell route={route} navigate={navigate} onLogout={logout}>{page}</AdminShell>{overlays}</>
   }
   return <><LandingPage onLogin={() => setLoginOpen(true)} navigate={navigate} />{loginOpen && <LoginModal onClose={() => setLoginOpen(false)} onSuccess={login} />}</>
 }
