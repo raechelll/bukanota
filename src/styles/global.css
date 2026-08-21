@@ -21,13 +21,6 @@ button{font-family:inherit}
 .avatar-stack span:first-child{margin-left:0}
 .avatar-stack span:nth-child(2){background:#dff5ed;color:#167a5c}
 .avatar-stack span:nth-child(3){background:#f8e9db;color:#aa662c}
-.product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.product-card{border:1px solid var(--line);border-radius:9px;padding:7px;font-size:8px}
-.product-card strong,.product-card span{display:block;margin-top:5px}
-.product-card span{color:var(--blue);font-weight:700}
-.product-visual{height:66px;border-radius:6px;display:grid;place-items:center;font:800 17px Manrope;color:#29547e;background:#e9f2fa}
-.tone-1{background:#f8eee4;color:#a57342}
-.tone-2{background:#e7f3ec;color:#398462}
 .tone-3{background:#f7e9e5;color:#ad5c4c}
 .floating-chip{position:absolute;z-index:3;background:#fff;border:1px solid #e2eaf4;box-shadow:0 13px 32px rgba(34,76,123,.14);border-radius:10px}
 .chip-sales{top:6px;right:-28px;padding:11px 14px;display:flex;align-items:center;gap:9px}
@@ -478,3 +471,18 @@ html[data-theme=dark] .admin-page-name h1,html[data-theme=dark] .module-title h2
 .setting-section-title h3,.toggle-settings h3,.appearance-options h3{font-size:17.5px}
 .toggle-settings b,.appearance-options b{font-size:13px}
 .toggle-settings small,.appearance-options small{font-size:11.5px}
+/* tombol simpan di dalam card tab settings */
+.toggle-settings .save-button{margin-top:16px}
+.appearance-options>h3{grid-column:1/-1}
+.appearance-options .save-button{grid-column:1/-1;justify-self:start}
+.setting-form>.save-button{margin-top:18px}
+
+/* ── Dropdown filter di toolbar (logs, katalog) ── */
+.toolbar-select{position:relative}
+.toolbar-select>button{height:40px;border:1px solid #dce5ef;background:#fff;border-radius:9px;padding:0 12px;font-size:10px;font-weight:600;color:#33475e;display:flex;align-items:center;gap:7px;cursor:pointer}
+.toolbar-select>button svg{width:13px;color:#8592a4}
+.toolbar-select-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:170px;background:#fff;border:1px solid #dce4ee;border-radius:10px;box-shadow:0 17px 40px rgba(22,48,80,.18);padding:6px;z-index:60;display:flex;flex-direction:column}
+.toolbar-select-menu button{border:0;background:transparent;text-align:left;padding:8px 11px;border-radius:7px;font-size:11.5px;font-weight:600;color:#33475e;cursor:pointer}
+.toolbar-select-menu button:hover{background:#f1f6fc}
+.toolbar-select-menu button.active{background:var(--blue);color:#fff}
+.data-toolbar button.filter-on{border-color:var(--blue);color:var(--blue);background:#eef5fd}

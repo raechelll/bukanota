@@ -6,7 +6,7 @@
 .inventory-kpis small,.inventory-kpis strong,.log-kpis small,.log-kpis strong{display:block}
 .inventory-kpis small,.log-kpis small{font-size:8px;color:#8a96a7}
 .inventory-kpis strong,.log-kpis strong{font:700 15px Manrope;margin-top:3px}
-.log-table .data-row{grid-template-columns:.7fr 1fr .7fr 1.8fr 1fr}
+.log-table .data-row{grid-template-columns:.7fr 1fr .7fr 1.8fr 1fr minmax(120px,max-content)}
 .log-table .data-row>span:first-child svg{width:12px}
 .log-table em{font-weight:700}
 .log-table em.log-login{background:#e8f2ff;color:var(--blue)}
@@ -21,8 +21,12 @@
   .inventory-kpis,.log-kpis{grid-template-columns:1fr}
   .inventory-kpis>div,.log-kpis>div{padding:12px}
 }
-.log-table.with-actions .data-row{grid-template-columns:.7fr 1fr .7fr 1.8fr 1fr 45px}
+.log-table.with-actions .data-row{grid-template-columns:.7fr 1fr .7fr 1.8fr 1fr minmax(120px,max-content)}
 .inventory-kpis small,.log-kpis small{font-size:10.5px}
 .inventory-kpis strong,.log-kpis strong{font-size:17px}
 .inventory-kpis small,.log-kpis small{font-size:12px}
 .inventory-kpis strong,.log-kpis strong{font-size:18.5px}
+
+/* 2 card KPI dibagi 50:50 */
+.log-kpis{grid-template-columns:repeat(2,1fr)}
+@media(max-width:720px){.log-kpis{grid-template-columns:1fr}}

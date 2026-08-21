@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
-import {
-  Ban, Eye, Pencil, Trash2,
-} from 'lucide-react'
+import { Ban, Eye, KeyRound, Pencil, Trash2 } from 'lucide-react'
 
-export default function RowActions({ onAction, extended = false }) {
-  const [open, setOpen] = useState(false)
-  const ref = useRef(null)
-  useEffect(() => { const close = (e) => !ref.current?.contains(e.target) && setOpen(false); addEventListener('mousedown', close); return () => removeEventListener('mousedown', close) }, [])
-  const run = (action) => { setOpen(false); onAction(action) }
-  return <div className="row-actions" ref={ref} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}><button aria-label="Aksi data" onClick={() => setOpen(!open)}><span className="kebab-dots" aria-hidden="true"></span></button>{open && <div><button onClick={() => run('detail')}><Eye /> Detail</button><button onClick={() => run('edit')}><Pencil /> Edit</button>{extended && <button onClick={() => run('cancel')}><Ban /> Cancel</button>}<button className="danger" onClick={() => run('delete')}><Trash2 /> Delete</button></div>}</div>
+export default function RowActions({ onAction, extended = false, resetAction = false }) {
+  return <div className="row-actions">
+    <button title="Detail" aria-label="Detail data" onClick={() => onAction('detail')}><Eye /></button>
+    <button title="Edit" aria-label="Edit data" onClick={() => onAction('edit')}><Pencil /></button>
+    {extended && (resetAction
+      ? <button title="Reset password" aria-label="Reset password" onClick={() => onAction('reset')}><KeyRound /></button>
+      : <button title="Cancel" aria-label="Cancel data" onClick={() => onAction('cancel')}><Ban /></button>)}
+    <button className="danger" title="Delete" aria-label="Hapus data" onClick={() => onAction('delete')}><Trash2 /></button>
+  </div>
 }

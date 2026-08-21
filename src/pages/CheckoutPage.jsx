@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  ArrowLeft, Building2, Check, CircleDollarSign, Clock3, CreditCard, Grid2X2, Landmark, QrCode, ReceiptText, Smartphone,
+  ArrowLeft, Check, CircleDollarSign, Clock3, CreditCard, Landmark, QrCode, ReceiptText, Smartphone,
 } from 'lucide-react'
 import calcTotals from '../utils/calcTotals'
 import '../styles/pos.css'
@@ -30,28 +30,28 @@ export default function CheckoutPage({ navigate, notify, cart, setCart, meja }) 
   const canConfirm = method && (method !== 'Tunai' || cashValue >= finalTotal)
 
   if (!cart.length && !done) return <div className="pos-page">
-    <header className="pos-page-header"><button className="back-button" onClick={()=>navigate('/app/pos')}><ArrowLeft /> Kembali</button><div><strong>Pembayaran</strong><span><i></i>Outlet Kemang · Kasir Utama</span></div><div className="pos-header-actions"><button onClick={()=>notify('Order disimpan sebagai pending', 'info')}><Clock3 /> Pending</button></div></header>
+    <header className="pos-page-header"><button className="back-button" onClick={()=>navigate('/pos')}><ArrowLeft /> Kembali</button><div><strong>Pembayaran</strong><span><i></i>Outlet Kemang · Kasir Utama</span></div><div className="pos-header-actions"><button onClick={()=>notify('Order disimpan sebagai pending', 'info')}><Clock3 /> Pending</button></div></header>
     <main className="pay-empty">
       <ReceiptText size={30} />
       <p>Belum ada orderan untuk dibayar.</p>
-      <button className="btn-solid" onClick={()=>navigate('/app/pos')}>Buat orderan di kasir POS</button>
+      <button className="btn-solid" onClick={()=>navigate('/pos')}>Buat orderan di kasir POS</button>
     </main>
   </div>
 
   if (done) return <div className="pos-page">
-    <header className="pos-page-header"><button className="back-button" onClick={()=>navigate('/app/pos')}><ArrowLeft /> Kembali</button><div><strong>Pembayaran</strong><span><i></i>Outlet Kemang · Kasir Utama</span></div><div className="pos-header-actions"><button onClick={()=>notify('Struk dikirim ke printer', 'success')}><ReceiptText /> Struk</button></div></header>
+    <header className="pos-page-header"><button className="back-button" onClick={()=>navigate('/pos')}><ArrowLeft /> Kembali</button><div><strong>Pembayaran</strong><span><i></i>Outlet Kemang · Kasir Utama</span></div><div className="pos-header-actions"><button onClick={()=>notify('Struk dikirim ke printer', 'success')}><ReceiptText /> Struk</button></div></header>
     <main className="pay-done">
       <span className="pay-check"><Check size={30} strokeWidth={2.2} /></span>
       <h1>Pembayaran Berhasil</h1>
       <p className="pay-done-total">Rp{fmt(finalTotal)}</p>
       <p className="pay-done-method">{selected?.name} · {orderNo}</p>
       {method === 'Tunai' && <p className="pay-done-change">Kembalian Rp{fmt(change)}</p>}
-      <button className="btn-solid" onClick={()=>navigate('/app/transactions')}>Lihat riwayat transaksi</button>
+      <button className="btn-solid" onClick={()=>navigate('/transactions')}>Lihat riwayat transaksi</button>
     </main>
   </div>
 
   return <div className="pos-page">
-    <header className="pos-page-header"><button className="back-button" onClick={()=>navigate('/app/pos')}><ArrowLeft /> Kembali</button><div><strong>Pembayaran</strong><span><i></i>Outlet Kemang · Kasir Utama</span></div><div className="pos-header-actions"><button onClick={()=>notify('Order disimpan sebagai pending', 'info')}><Clock3 /> Pending</button></div></header>
+    <header className="pos-page-header"><button className="back-button" onClick={()=>navigate('/pos')}><ArrowLeft /> Kembali</button><div><strong>Pembayaran</strong><span><i></i>Outlet Kemang · Kasir Utama</span></div><div className="pos-header-actions"><button onClick={()=>notify('Order disimpan sebagai pending', 'info')}><Clock3 /> Pending</button></div></header>
     <main className="pay-main">
       <section className="pay-summary" aria-label="Ringkasan pesanan">
         <div className="pay-summary-head">

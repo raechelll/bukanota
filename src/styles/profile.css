@@ -18,7 +18,6 @@
 .profile-tabs button.active{background:var(--blue);border-color:var(--blue);color:#fff}
 .profile-card{padding:0;overflow:hidden}
 .profile-card>.setting-form,.profile-card>.image-uploader{margin:0;padding:20px}
-.login-table .data-row{grid-template-columns:1.5fr 1.2fr 1fr .6fr}
 @media(max-width:430px){
   .profile-hero{align-items:flex-start}
   .profile-hero>em{display:none}

@@ -23,12 +23,12 @@
 .data-row>span:last-child button{height:28px;border:1px solid #d9e3ee;background:#fff;color:#50627a;border-radius:6px;padding:0 8px;font-size:8px;display:inline-flex;align-items:center;gap:5px}
 .data-row>span:last-child button svg{width:12px}
 .data-row>span:last-child button.danger{color:#c34a4a;border-color:#f0caca}
-.table-thumb{width:30px;height:30px;border-radius:7px;background:#deebfa;display:block}
 .table-footer{height:56px;padding:0 15px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;color:#8a96a7;font-size:8px}
 .table-footer>div{display:flex;gap:4px}
 .table-footer button,.table-footer b{width:27px;height:27px;border:1px solid #dce4ed;background:#fff;color:#63738a;border-radius:6px;display:grid;place-items:center;font-size:8px}
 .table-footer b{background:var(--blue);color:#fff;border-color:var(--blue)}
 .module-tabs{display:flex;gap:5px;border-bottom:1px solid #dce4ee;margin-bottom:15px}
+.module-tabs .add-wrap{margin-left:auto;align-self:center}
 .module-tabs button{height:41px;border:0;background:transparent;padding:0 13px;color:#718096;font-size:9px;font-weight:700;display:flex;align-items:center;gap:7px;position:relative}
 .module-tabs button svg{width:14px}
 .module-tabs button.active{color:var(--blue)}
@@ -50,34 +50,27 @@
   .data-toolbar label{width:100%}
   .module-tabs button{flex:1;justify-content:center}
 }
-.row-actions{position:relative;display:inline-flex}
+.row-actions{display:inline-flex;gap:6px}
 .data-row .row-actions>button{width:30px!important;height:30px!important;padding:0!important;justify-content:center!important;border-color:#dde6f0!important}
 .row-actions>button svg{width:15px!important}
-.row-actions>div{position:absolute;z-index:90;right:0;top:35px;width:142px;background:#fff;border:1px solid #dce5ef;border-radius:9px;padding:5px;box-shadow:0 14px 35px rgba(25,52,86,.18)}
-.row-actions>div button{width:100%;height:32px!important;border:0!important;background:transparent!important;border-radius:6px!important;justify-content:flex-start!important;color:#52657c!important;font-size:8px!important}
-.row-actions>div button:hover{background:#f0f5fb!important}
-.row-actions>div button.danger{color:#cb4646!important}
-.row-actions>div button svg{width:12px!important}
-.kebab-dots,.kebab-dots:before,.kebab-dots:after{display:block;width:3px;height:3px;border-radius:50%;background:currentColor}
-.kebab-dots{position:relative}
-.kebab-dots:before,.kebab-dots:after{content:'';position:absolute;left:0}
-.kebab-dots:before{top:-6px}
-.kebab-dots:after{top:6px}
-.row-actions>button{transition:.18s}
-.row-actions:hover>button,.row-actions>button:focus-visible{background:#eaf3ff!important;border-color:#a7c8f0!important;color:var(--blue)!important}
-.row-actions>div{top:30px;padding-top:6px;animation:actionMenuIn .16s ease both}
-.row-actions>div:before{content:'';position:absolute;left:0;right:0;top:-7px;height:8px}
-.row-actions>div button{transition:.15s}
-.row-actions>button{width:30px;height:30px;padding:0;border:1px solid #d9e3ee;background:#fff;color:#60738a;border-radius:8px;display:grid;place-items:center;cursor:pointer}
+.row-actions>button{width:30px;height:30px;padding:0;border:1px solid #d9e3ee;background:#fff;color:#60738a;border-radius:8px;display:grid;place-items:center;cursor:pointer;transition:.15s}
+.row-actions>button:hover,.row-actions>button:focus-visible{background:#eaf3ff!important;border-color:#a7c8f0!important;color:var(--blue)!important}
+.row-actions>button.danger{color:#c34a4a;border-color:#f0caca}
+.row-actions>button.danger:hover,.row-actions>button.danger:focus-visible{background:#fdeaea!important;border-color:#e5b6b6!important;color:#b23434!important}
 .add-wrap{position:relative}
-.add-wrap>button{height:40px;border:0;background:var(--blue);color:#fff;border-radius:8px;padding:0 14px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:7px;cursor:pointer}
+.module-tabs .add-wrap{margin-left:auto;align-self:center;margin-bottom:7px}
+.add-wrap>button{height:38px;border:0;background:var(--blue);color:#fff;border-radius:9px;padding:0 16px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px;cursor:pointer;box-shadow:0 6px 14px rgba(0,90,158,.22);transition:background .15s,transform .1s,box-shadow .15s}
+.add-wrap>button:hover{background:var(--blue-dark);box-shadow:0 8px 18px rgba(0,90,158,.28)}
+.add-wrap>button:active{transform:translateY(1px);box-shadow:0 4px 10px rgba(0,90,158,.24)}
 .add-wrap>button svg{width:14px}
+.add-wrap>button svg:last-child{transition:transform .18s}
 .add-wrap>button.open svg:last-child{transform:rotate(180deg)}
 .add-wrap .add-backdrop{position:fixed;inset:0;z-index:40}
-.add-menu{position:absolute;right:0;top:calc(100% + 7px);z-index:41;width:252px;background:#fff;border:1px solid #e2e9f2;border-radius:11px;box-shadow:0 18px 44px rgba(15,45,80,.16);padding:6px;display:grid;gap:3px}
-.add-menu button{display:flex;align-items:center;gap:10px;padding:9px 10px;border:0;background:transparent;border-radius:8px;cursor:pointer;text-align:left;color:#33475e;transition:.15s}
+.add-menu{position:absolute;right:0;top:calc(100% + 9px);z-index:41;width:262px;background:#fff;border:1px solid #e2e9f2;border-radius:12px;box-shadow:0 18px 44px rgba(15,45,80,.16);padding:6px;display:grid;gap:3px;animation:addMenuIn .16s ease both}
+.add-menu button{display:flex;align-items:center;gap:10px;padding:10px 11px;border:0;background:transparent;border-radius:9px;cursor:pointer;text-align:left;color:#33475e;transition:.15s}
 .add-menu button:hover{background:#f1f7ff}
-.add-menu button:hover>svg:last-child{color:var(--blue)}
+.add-menu button:hover>svg:last-child{color:var(--blue);transform:translateX(2px)}
+.add-menu button>svg:last-child{transition:.15s}
 .add-menu button>svg:first-child{width:30px;height:30px;padding:8px;box-sizing:border-box;border-radius:8px;background:#e9f3ff;color:var(--blue);flex:none}
 .add-menu button>svg:last-child{width:12px;margin-left:auto;color:#9aa8ba;flex:none}
 .add-menu b{font-size:10px;display:block;color:#22374e}
@@ -108,7 +101,6 @@
 .list-table td{font-size:12.5px}
 .list-table em{font-size:11px}
 .list-table .empty-row{font-size:11.5px}
-.row-actions>div button{font-size:11px!important}
 .table-footer{font-size:10.5px}
 .table-footer button,.table-footer b{font-size:11px}
 .module-tabs button,.inventory-tabs button{font-size:12px}
@@ -126,7 +118,6 @@
 .list-table td{font-size:14px}
 .list-table em{font-size:12px}
 .list-table .empty-row{font-size:13px}
-.row-actions>div button{font-size:12.5px!important}
 .table-footer{font-size:12px}
 .table-footer button,.table-footer b{font-size:12px}
 .module-tabs button,.inventory-tabs button,.settings-tabs button{font-size:13.5px}
@@ -137,3 +128,22 @@
 }
 /* Toolbar: action button aligned right on same row as search */
 .data-toolbar>button.primary:last-child,.data-toolbar>.add-wrap:last-child{margin-left:auto}
+/* samakan ukuran font tabel data-row dengan list-table (/app/transactions) */
+.data-row{font-size:14px}
+.data-row b{font-size:14px}
+.data-row b small{font-size:12px}
+.data-row em{font-size:12px}
+.data-head{font-size:11.5px}
+@keyframes addMenuIn{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
+@media(max-width:720px){
+  .module-tabs .add-wrap{flex:none;margin-bottom:0}
+}
+/* menu tambah polos (tanpa ikon/deskripsi) */
+.add-menu button{padding:12px 13px;font-weight:600}
+.add-menu button b{font-size:13.5px}
+
+/* ── Card data full height: mentok bawah layar, tabel scroll + pagination tetap terlihat ── */
+.module-page{display:flex;flex-direction:column}
+.module-page>.data-card{flex:1;display:flex;flex-direction:column;min-height:calc(100dvh - 215px)}
+.module-page>.data-card .data-table{flex:1;overflow-y:auto;min-height:0}
+.module-page>.data-card .table-footer{flex:none}

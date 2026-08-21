@@ -70,3 +70,9 @@
 .permission-list small{font-size:12px}
 .access-grid>aside>button strong{font-size:13px}
 .access-grid>aside>button small{font-size:11.5px}
+
+/* tombol tambah di header daftar peran */
+.access-grid aside h3{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.access-add{display:inline-flex;align-items:center;gap:5px;height:30px;border:1px solid var(--blue);background:var(--blue);color:#fff;border-radius:7px;padding:0 10px;font-size:11.5px;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s}
+.access-add:hover{background:var(--blue-dark);border-color:var(--blue-dark)}
+.access-add svg{width:13px}

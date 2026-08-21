@@ -5,7 +5,24 @@
 .entity-stats small,.entity-stats strong{display:block}
 .entity-stats small{font-size:7px;color:#8695a7}
 .entity-stats strong{font:700 16px Manrope;margin-top:9px}
-.entity-table .data-row{grid-template-columns:repeat(var(--columns),minmax(110px,1fr)) 45px}
+.entity-table .data-row{grid-template-columns:repeat(var(--columns),minmax(110px,1fr)) minmax(150px,max-content)}
+
+/* halaman entity mengisi tinggi layar sampai bawah */
+.entity-module{display:flex;flex-direction:column;min-height:calc(100dvh - 80px);padding-bottom:28px}
+.entity-module .data-card{flex:1;display:flex;flex-direction:column}
+.entity-module .entity-table{flex:1;align-content:start}
+.empty-rows span{grid-column:1/-1;text-align:center;color:#8d9aab;font-size:14px;padding:26px 0}
+
+/* popover filter toolbar */
+.pop-wrap{position:relative}
+.pop-wrap>button{height:34px;border:1px solid #dce5ef;background:#fff;color:#68788e;border-radius:8px;font-size:12px;font-weight:600;padding:0 10px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;transition:border-color .15s,color .15s,background .15s}
+.pop-wrap>button svg{width:13px}
+.pop-wrap>button:hover,.pop-wrap>button.active,.pop-wrap>button.open{border-color:var(--blue);color:var(--blue);background:#f4f9ff}
+.pop-menu{position:absolute;z-index:41;top:calc(100% + 7px);left:0;min-width:190px;background:#fff;border:1px solid #e2e9f2;border-radius:11px;box-shadow:0 18px 44px rgba(15,45,80,.16);padding:6px;display:grid;gap:2px;animation:addMenuIn .16s ease both}
+.pop-menu button{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;border:0;background:transparent;border-radius:8px;cursor:pointer;text-align:left;color:#33475e;font-size:12.5px;font-weight:600;transition:background .15s}
+.pop-menu button:hover{background:#f1f7ff}
+.pop-menu button.selected{color:var(--blue)}
+.pop-menu button svg{width:14px}
 @media(max-width:900px){
   .entity-stats{grid-template-columns:repeat(2,1fr)}
 }

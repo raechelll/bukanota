@@ -36,3 +36,26 @@
 .setting-demo-head h3,.card-heading h3,.access-grid h3,.schedule-card h3{font-size:16.5px}
 .setting-demo-head p,.card-heading p,.schedule-card p,.setting-section-title p,.toggle-settings p,.permission-head p{font-size:12px}
 .setting-demo-head button,.save-button,.permission-actions button,.generic-module>div button{font-size:12.5px}
+
+/* daftar outlet + detail */
+.outlet-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.outlet-card{display:flex;flex-direction:column;gap:12px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
+.outlet-card:hover{border-color:#c9d7e8;box-shadow:0 14px 32px rgba(24,69,122,.1);transform:translateY(-2px)}
+.outlet-card-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:rgba(0,90,158,.08);color:var(--blue)}
+.outlet-card-icon svg{width:20px;height:20px}
+.outlet-card>section{display:flex;flex-direction:column;gap:3px}
+.outlet-card>section b{font:700 15.5px Manrope;color:var(--ink)}
+.outlet-card>section small{color:#8794a6;font-size:12px}
+.outlet-card-info{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:#52657c}
+.outlet-card-info span{display:flex;align-items:center;gap:7px}
+.outlet-card-info svg{width:14px;height:14px;color:var(--muted);flex:none}
+.outlet-card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:2px;padding-top:12px;border-top:1px solid #edf1f6}
+.outlet-card-foot em{font-style:normal;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;background:#e7f6f0;color:#178261}
+.outlet-card-foot small{color:var(--blue);font-weight:600;font-size:12.5px}
+.outlet-detail-head{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.outlet-back{align-self:flex-start;display:inline-flex;align-items:center;gap:7px;height:36px;border:1px solid var(--line);background:#fff;color:#52657c;border-radius:8px;padding:0 13px;font-size:12.5px;font-weight:600;cursor:pointer;transition:border-color .15s,color .15s}
+.outlet-back:hover{border-color:var(--blue);color:var(--blue)}
+.outlet-back svg{width:15px}
+.outlet-detail-head h2{font:700 21px Manrope;color:var(--ink);letter-spacing:-.01em}
+.outlet-detail-head small{color:#8794a6;font-size:12.5px;margin-top:-4px}
+.outlet-empty{grid-column:1/-1;text-align:center;color:#8d9aab;font-size:14px;padding:34px 0}

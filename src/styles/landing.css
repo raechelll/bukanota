@@ -397,3 +397,66 @@
 @media(max-width:430px){
   .footer-grid>div:not(.footer-brand){gap:9px}
 }
+
+/* ── Kartu POS animasi di hero (dipulihkan) ── */
+.pos-ui{background:#f6f9fd}
+.pos-anim-top{height:52px;background:#fff;border-bottom:1px solid #e2eaf4;padding:0 17px;display:flex;align-items:center;gap:9px}
+.pos-anim-top>span{width:27px;height:27px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font:800 9px Manrope}
+.pos-anim-top>b{font-size:10px}
+.pos-anim-top>i{width:6px;height:6px;border-radius:50%;background:#1abc83;margin-left:auto;animation:statusPulse 1.8s infinite}
+.pos-anim-top>small{font-size:8px;color:#7e8fa5}
+.pos-anim-body{display:grid;grid-template-columns:52px minmax(0,1fr) 215px;min-height:390px}
+.pos-anim-body>aside:first-child{padding:18px 10px;border-right:1px solid #e2eaf4;display:flex;flex-direction:column;gap:13px}
+.pos-anim-body>aside:first-child span{width:31px;height:31px;border-radius:8px;display:grid;place-items:center;color:#8292a7}
+.pos-anim-body>aside:first-child span.active{background:#e6f1ff;color:var(--blue)}
+.pos-anim-body>aside:first-child svg{width:14px}
+.pos-anim-body>section{padding:22px 16px;min-width:0}
+.pos-anim-heading{display:flex;justify-content:space-between;align-items:center}
+.pos-anim-heading small,.pos-anim-heading b{display:block}
+.pos-anim-heading small{font-size:7px;color:#91a0b3}
+.pos-anim-heading b{font:700 14px Manrope;margin-top:3px}
+.pos-anim-heading>svg{width:30px;height:30px;padding:8px;border:1px solid #dce5ef;border-radius:8px;color:#71839a;box-sizing:border-box}
+.pos-anim-tabs{display:flex;gap:18px;font-size:7px;margin:19px 0 11px;color:#8594a8}
+.pos-anim-tabs b{color:var(--blue);position:relative}
+.pos-anim-tabs b:after{content:'';position:absolute;left:0;right:0;bottom:-7px;height:2px;background:var(--blue)}
+.pos-anim-products{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.pos-anim-products>div{border:1px solid #dde7f3;border-radius:11px;padding:8px;background:#fff;animation:cardPop .55s var(--delay) both;transition:box-shadow .15s,border-color .15s}
+.pos-anim-products>div:hover{border-color:#c5d6ec;box-shadow:0 6px 16px rgba(24,69,122,.08)}
+.pos-anim-products i{height:72px;border-radius:9px;background:#dfebfa;color:#315c89;display:grid;place-items:center;font:800 20px Manrope;font-style:normal}
+.pos-anim-products>div:nth-child(2) i{background:#eee8df;color:#9b6a39}
+.pos-anim-products>div:nth-child(3) i{background:#dff0ea;color:#3f7e69}
+.pos-anim-products>div:nth-child(4) i{background:#f2e4e3;color:#a45d55}
+.pos-anim-products b,.pos-anim-products small{display:block}
+.pos-anim-products b{font-size:8px;margin-top:8px}
+.pos-anim-products small{font-size:7px;color:var(--blue);font-weight:700;margin-top:4px}
+.pos-anim-cart{display:flex;flex-direction:column;border-left:1px solid #e2eaf4;background:#fff;padding:20px 15px}
+.pos-anim-cart>b,.pos-anim-cart>small{display:block}
+.pos-anim-cart>b{font-size:11px}
+.pos-anim-cart>small{font-size:7px;color:#8b99aa;margin:5px 0 12px;padding-bottom:10px;border-bottom:1px solid #edf1f6}
+.pos-anim-cart p{display:flex;justify-content:space-between;border-bottom:1px solid #edf1f6;padding:11px 0;font-size:7px}
+.pos-anim-cart>div{display:flex;justify-content:space-between;align-items:baseline;margin:auto 0 13px;padding-top:13px;font-size:8px}
+.pos-anim-cart>div b{font-size:11px}
+.pos-anim-cart>button,.visual-primary{width:100%;height:37px;flex-shrink:0;border:0;border-radius:9px;background:var(--blue);color:#fff;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:8px;font-weight:700;cursor:pointer;transition:background .15s}
+.pos-anim-cart>button:hover,.visual-primary:hover{background:var(--blue-dark)}
+.pos-anim-cart>button svg,.visual-primary svg{width:13px}
+.pos-ui.compact .pos-anim-body{min-height:335px}
+
+@media(max-width:1100px){
+  .pos-anim-body{grid-template-columns:45px minmax(0,1fr) 185px}
+}
+@media(max-width:900px){
+  .pos-anim-body{grid-template-columns:48px minmax(0,1fr) 205px}
+}
+@media(max-width:720px){
+  .pos-anim-body{grid-template-columns:39px minmax(0,1fr)}
+  .pos-anim-cart{grid-column:1/-1;border-left:0;border-top:1px solid #e2eaf4;padding:14px}
+  .pos-anim-cart>div{margin:0 0 10px;padding-top:12px}
+  .pos-anim-body>aside:first-child{padding-inline:4px}
+  .pos-anim-products i{height:58px}
+}
+@media(max-width:430px){
+  .pos-anim-products{gap:6px}
+  .pos-anim-products>div{padding:6px}
+  .pos-anim-products b{font-size:7px}
+  .pos-anim-body>section{padding:15px 9px}
+}

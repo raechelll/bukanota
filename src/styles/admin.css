@@ -69,10 +69,8 @@
 .mobile-close{display:none}
 .admin-nav-scroll{overflow:auto;padding:8px 0;flex:1}
 .admin-group{margin-bottom:5px}
-.global-search{width:min(330px,31vw);height:38px;border:1px solid #dce5ef;background:#f8fafc;color:#8592a4;border-radius:9px;padding:0 10px;display:flex;align-items:center;gap:8px;text-align:left}
-.global-search>svg{width:14px}
+.global-search{width:min(330px,31vw);height:38px;border:1px solid #dce5ef;background:#f8fafc;color:#8592a4;border-radius:9px;padding:0 13px;display:flex;align-items:center;text-align:left}
 .global-search span{font-size:8px}
-.global-search kbd{margin-left:auto;border:1px solid #d9e1eb;background:#fff;padding:3px 5px;border-radius:5px;font-size:7px}
 .outlet-selector{width:auto!important;padding:0 10px!important;gap:6px!important}
 .outlet-selector span{font-size:8px}
 .header-popover{position:relative}
@@ -204,8 +202,6 @@
 .admin-header h1{font-size:20px}
 .outlet-selector span{font-size:10.5px}
 .global-search input{font-size:12px}
-.global-search span{font-size:10px}
-.global-search kbd{font-size:9px}
 .pop-title b,.outlet-pop b,.outlet-pop>button section b,.profile-pop-head b,.profile-pop nav button section b{font-size:11.5px}
 .pop-title small,.outlet-pop small,.outlet-pop>button section small,.notification-pop p b{font-size:10px}
 .notification-pop p small,.profile-pop nav button section small{font-size:9.5px}
@@ -220,9 +216,105 @@
 .admin-header h1{font-size:22px}
 .outlet-selector span{font-size:12px}
 .global-search input{font-size:13px}
-.global-search kbd{font-size:10px}
 .pop-title b,.outlet-pop b,.outlet-pop>button section b,.profile-pop-head b,.profile-pop nav button section b{font-size:13px}
 .pop-title small,.outlet-pop small,.outlet-pop>button section small,.notification-pop p b{font-size:11px}
 .notification-pop p small,.profile-pop nav button section small,.profile-pop-head small{font-size:10.5px}
 .add-menu b,.search-pop b{font-size:13.5px}
 .add-menu small,.search-pop small{font-size:11.5px}
+
+/* breadcrumb Home clickable */
+.crumb-home{border:0;background:none;padding:0;font:inherit;color:inherit;cursor:pointer;transition:color .15s}
+.crumb-home:hover{color:var(--blue);text-decoration:underline}
+
+/* ── Sidebar rapikan: group toggle ── */
+.group-toggle{width:100%;border:0;background:transparent;color:#6e99c9;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 12px 7px;cursor:pointer;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:left}
+.group-toggle:hover{color:#a8c6e8}
+.group-toggle svg{width:13px;flex:none}
+.group-toggle svg.open{transform:rotate(-180deg)}
+.admin-group nav{padding-left:4px}
+
+/* ── Collapse: icon-only + tooltip detail saat hover ── */
+@media(min-width:901px){
+  .sidebar-collapsed .admin-nav-scroll{overflow:visible!important}
+  .sidebar-collapsed .admin-group{padding-inline:6px}
+  .sidebar-collapsed .group-toggle{display:grid;place-items:center;gap:0;padding:13px 0 7px}
+  .sidebar-collapsed .group-toggle svg{display:none}
+  .sidebar-collapsed .group-toggle::after{content:'';width:22px;height:2px;border-radius:2px;background:#1d4a80}
+  .sidebar-collapsed .admin-sidebar nav button{position:relative}
+  .sidebar-collapsed .admin-sidebar nav button:hover::after,.sidebar-collapsed .admin-sidebar nav button:focus-visible::after{content:attr(data-tip);position:absolute;left:calc(100% + 15px);top:50%;transform:translateY(-50%);background:#0c2144;border:1px solid #2a5288;color:#fff;font-size:11.5px;font-weight:600;padding:8px 12px;border-radius:8px;white-space:nowrap;z-index:80;box-shadow:0 12px 28px rgba(3,15,35,.5);pointer-events:none}
+  .sidebar-collapsed .admin-sidebar nav button:hover::before{content:'';position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:-5px;border:5px solid transparent;border-right-color:#2a5288;z-index:81}
+}
+/* pulihkan label saat sidebar jadi drawer mobile walau state collapsed */
+@media(max-width:900px){
+  .sidebar-collapsed .admin-brand>.brand>span:last-child,.sidebar-collapsed .group-toggle span,.sidebar-collapsed .admin-group nav button span,.sidebar-collapsed .admin-account div{display:revert}
+  .sidebar-collapsed .admin-group nav button em{display:block}
+}
+.sidebar-collapsed .desktop-collapse svg{transform:rotate(180deg)}
+
+/* ── Perbaikan: tombol collapse tampil di desktop ── */
+.admin-brand>.desktop-collapse{display:block}
+@media(max-width:900px){
+  .admin-brand>.desktop-collapse{display:none}
+}
+
+/* ── Group toggle lebih tinggi & lega ── */
+.group-toggle{height:42px;padding:0 12px;margin-top:4px;font-size:12px}
+.admin-group{margin-bottom:16px}
+.admin-sidebar nav{padding-bottom:6px}
+.sidebar-collapsed .group-toggle{height:auto;padding:13px 0 7px}
+.sidebar-collapsed .group-toggle::after{width:26px;height:2px}
+
+/* ── Sidebar: animasi buka-tutup halus ── */
+@media(min-width:901px){
+  .admin-sidebar{transition:width .3s cubic-bezier(.4,0,.2,1),transform .25s ease}
+  .admin-content{transition:margin-left .3s cubic-bezier(.4,0,.2,1)}
+  .admin-brand>.brand>span:last-child,.group-toggle span,.admin-group nav button span,.admin-group nav button em{display:inline-block;transition:opacity .16s ease .1s,transform .16s ease .1s}
+  .sidebar-collapsed .admin-brand>.brand>span:last-child,
+  .sidebar-collapsed .group-toggle span,
+  .sidebar-collapsed .admin-group nav button span,
+  .sidebar-collapsed .admin-group nav button em{display:inline-block;opacity:0;transform:translateX(-10px);width:0;min-width:0;padding:0;margin:0;border:0;overflow:hidden;white-space:nowrap;pointer-events:none}
+  .sidebar-collapsed .admin-group nav button{gap:0}
+  .sidebar-collapsed .group-toggle::after{animation:dividerIn .3s ease both}
+  .sidebar-collapsed .desktop-collapse svg{transform:rotate(180deg);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+}
+@keyframes dividerIn{from{opacity:0;transform:scaleX(.3)}to{opacity:1;transform:none}}
+
+/* ── Sidebar scrollable tanpa scrollbar terlihat ── */
+.admin-nav-scroll{overflow-y:auto!important;overflow-x:hidden!important;scrollbar-width:none;-ms-overflow-style:none}
+.admin-nav-scroll::-webkit-scrollbar{display:none;width:0;height:0}
+
+/* ── Ukuran ikon tetap saat collapsed ── */
+.sidebar-collapsed .admin-sidebar nav button{height:42px;padding:0;justify-content:center}
+.sidebar-collapsed .admin-sidebar nav button svg{width:17px;height:17px;margin:0}
+.sidebar-collapsed .admin-account>span{width:29px;height:29px;font-size:11px}
+
+/* ── Top-level nav (tanpa group) + pemisah ── */
+.nav-sep{height:1px;background:#123a6b;margin:10px 8px 12px;flex:none}
+.sidebar-collapsed .nav-sep{margin-inline:16px}
+
+/* ── Toggle collapse rapi: kotak kecil konsisten ── */
+.admin-brand>.desktop-collapse{width:28px;height:28px;border:1px solid rgba(255,255,255,.18);border-radius:7px;display:grid;place-items:center;margin-left:auto;background:rgba(255,255,255,.05);color:#b8d1ec}
+.admin-brand>.desktop-collapse:hover{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.3)}
+.sidebar-collapsed .admin-brand>.desktop-collapse{margin:auto;margin-top:2px}
+
+/* ── Sidebar fixed terbuka: jarak pemisah lebih rapat ── */
+.nav-sep{margin:6px 8px 8px}
+
+/* ── Mobile responsive: sidebar drawer + navbar ── */
+.sidebar-overlay{display:none}
+@media(max-width:900px){
+  .admin-content{margin-left:0!important}
+  .sidebar-overlay{display:block;position:fixed;inset:0;background:rgba(6,20,40,.55);backdrop-filter:blur(2px);z-index:29;animation:fadeIn .2s ease}
+  .admin-sidebar{z-index:30;width:min(280px,84vw)}
+  .admin-header{height:56px;padding:0 14px;gap:10px}
+  .admin-page-name h1{font-size:15px}
+  .header-avatar{width:30px;height:30px;font-size:10px}
+  .notification-pop,.profile-pop{right:-8px;width:min(255px,86vw)}
+  .admin-actions{gap:7px}
+  .admin-actions button{width:32px;height:32px}
+}
+@media(max-width:430px){
+  .admin-header{padding:0 10px}
+  .outlet-selector{display:none!important}
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}

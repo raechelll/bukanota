@@ -6,7 +6,8 @@
 .inventory-kpis small,.inventory-kpis strong,.log-kpis small,.log-kpis strong{display:block}
 .inventory-kpis small,.log-kpis small{font-size:8px;color:#8a96a7}
 .inventory-kpis strong,.log-kpis strong{font:700 15px Manrope;margin-top:3px}
-.inventory-table .data-row{grid-template-columns:2fr 1fr .75fr .7fr 35px}
+.inventory-table .data-row{grid-template-columns:2fr 1fr .75fr .7fr minmax(120px,max-content)}
+.inventory-subtable .data-row{grid-template-columns:1.1fr 1.7fr .9fr 1fr minmax(120px,max-content)}
 @media(max-width:900px){
   .inventory-kpis,.log-kpis{grid-template-columns:repeat(3,1fr)}
 }
