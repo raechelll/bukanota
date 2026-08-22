@@ -1,6 +1,7 @@
 /* Entity pages (payment/membership/users/accounting/orders/transactions) */
 
 .entity-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.entity-stats.cols-3{grid-template-columns:repeat(3,1fr)}
 .entity-stats>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px}
 .entity-stats small,.entity-stats strong{display:block}
 .entity-stats small{font-size:7px;color:#8695a7}
@@ -26,10 +27,10 @@
 .pop-menu button.selected{color:var(--blue)}
 .pop-menu button svg{width:14px}
 @media(max-width:900px){
-  .entity-stats{grid-template-columns:repeat(2,1fr)}
+  .entity-stats,.entity-stats.cols-3{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:720px){
-  .workspace-metrics.expanded,.entity-stats{grid-template-columns:1fr 1fr}
+  .workspace-metrics.expanded,.entity-stats,.entity-stats.cols-3{grid-template-columns:1fr 1fr}
   .settings-crud-table,.entity-table,.dash-table{min-width:650px}
   .entity-module{min-height:0;padding-bottom:20px}
   .entity-module .data-card{min-height:0}
@@ -39,7 +40,7 @@
   .pop-wrap>button svg{width:12px}
 }
 @media(max-width:430px){
-  .workspace-metrics.expanded,.entity-stats{grid-template-columns:1fr}
+  .workspace-metrics.expanded,.entity-stats,.entity-stats.cols-3{grid-template-columns:1fr}
   .entity-stats{gap:6px}
 }
 .entity-stats small{font-size:10px}
