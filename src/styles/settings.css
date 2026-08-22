@@ -71,3 +71,7 @@
   .settings-crud-table .data-row>span:nth-child(4):before{content:'Status'!important}
   .settings-crud-table .data-row>span:nth-child(5):before{content:'Aksi'!important}
 }
+
+/* ── Font seragam & tanpa bold di form settings ── */
+.settings-page .crud-fields label,.settings-page .image-uploader>span{font-weight:400}
+.settings-page .image-uploader>div:nth-of-type(2) label,.settings-page .image-uploader>div:nth-of-type(2) button{font-weight:400}

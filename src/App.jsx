@@ -13,6 +13,8 @@ import AccessPage from './pages/AccessPage'
 import BackupPage from './pages/BackupPage'
 import LogsPage from './pages/LogsPage'
 import SettingsPage from './pages/SettingsPage'
+import CompanyPage from './pages/CompanyPage'
+import SelfOrderPage from './pages/SelfOrderPage'
 import CatalogSettingsPage from './pages/CatalogSettingsPage'
 import ProfilePage from './pages/ProfilePage'
 import EntityPage from './pages/EntityPage'
@@ -37,9 +39,11 @@ function App() {
   const notify = (message, type = 'success') => setToast({ id: Date.now(), message, type })
   const openModal = (config) => setModal({ ...config, id: Date.now() })
   const overlays = <>{modal && <AppModal key={modal.id} modal={modal} onClose={() => setModal(null)} notify={notify} language={language} />}<Toast toast={toast} onClose={() => setToast(null)} /></>
-  const publicRoutes = ['/']
+  const publicRoutes = ['/', '/company']
   const appRoutes = ['/dashboard','/pos','/checkout','/payment','/membership','/inventory','/accounting','/users','/outlet','/logs','/backup','/access','/settings','/profile','/transactions','/orders','/categories','/menu']
-  if (!publicRoutes.includes(route) && !appRoutes.includes(route) && !route.startsWith('/outlet/')) return <NotFoundPage navigate={navigate} />
+  if (!publicRoutes.includes(route) && !appRoutes.includes(route) && !route.startsWith('/outlet/') && !route.startsWith('/company/')) return <NotFoundPage navigate={navigate} />
+  if (route === '/company') return <><CompanyPage navigate={navigate} />{overlays}</>
+  if (route.startsWith('/company/')) return <><SelfOrderPage slug={route.split('/')[2]} navigate={navigate} />{overlays}</>
   if (route.startsWith('/') && !loggedIn) return <><LandingPage onLogin={() => setLoginOpen(true)} navigate={navigate} />{loginOpen && <LoginModal onClose={() => setLoginOpen(false)} onSuccess={login} />}</>
   if (route === '/pos' && loggedIn) return <><PosPage navigate={navigate} openModal={openModal} notify={notify} cart={cart} setCart={setCart} meja={meja} setMeja={setMeja} />{overlays}</>
   if (route === '/checkout' && loggedIn) return <><CheckoutPage navigate={navigate} openModal={openModal} notify={notify} cart={cart} setCart={setCart} meja={meja} />{overlays}</>
