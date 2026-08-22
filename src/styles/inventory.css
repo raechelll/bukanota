@@ -6,18 +6,25 @@
 .inventory-kpis small,.inventory-kpis strong,.log-kpis small,.log-kpis strong{display:block}
 .inventory-kpis small,.log-kpis small{font-size:8px;color:#8a96a7}
 .inventory-kpis strong,.log-kpis strong{font:700 15px Manrope;margin-top:3px}
-.inventory-table .data-row{grid-template-columns:2fr 1fr .75fr .7fr minmax(120px,max-content)}
-.inventory-subtable .data-row{grid-template-columns:1.1fr 1.7fr .9fr 1fr minmax(120px,max-content)}
+.inventory-table,.inventory-subtable{min-width:0}
+.inventory-table .data-row{grid-template-columns:minmax(160px,2fr) minmax(96px,1fr) minmax(70px,.75fr) minmax(72px,.7fr) 52px}
+.inventory-subtable .data-row{grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.7fr) minmax(92px,.9fr) minmax(100px,1fr) 52px}
+.inventory-table .data-row>span:last-child,.inventory-subtable .data-row>span:last-child{justify-content:center}
 @media(max-width:900px){
   .inventory-kpis,.log-kpis{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:720px){
-  .inventory-kpis,.log-kpis{grid-template-columns:1fr}
-  .inventory-kpis>div,.log-kpis>div{padding:12px}
-  .inventory-table{min-width:720px}
+  .inventory-kpis,.log-kpis{grid-template-columns:1fr 1fr}
+  .inventory-kpis>div,.log-kpis>div{padding:12px;gap:10px}
+  .inventory-kpis>div>svg,.log-kpis>div>svg{width:30px;height:30px;padding:8px}
+  .inventory-table,.inventory-subtable{min-width:650px}
 }
-.inventory-tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid #dce4ee;margin-bottom:14px;scrollbar-width:none}
-.inventory-tabs button{white-space:nowrap;height:39px;border:0;background:transparent;color:#6f7f95;padding:0 11px;font-size:8px;font-weight:700;position:relative}
+@media(max-width:430px){
+  .inventory-kpis,.log-kpis{grid-template-columns:1fr}
+}
+.inventory-tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid #dce4ee;margin-bottom:14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.inventory-tabs::-webkit-scrollbar{display:none}
+.inventory-tabs button{white-space:nowrap;height:39px;border:0;background:transparent;color:#6f7f95;padding:0 11px;font-size:8px;font-weight:700;position:relative;flex:none}
 .inventory-tabs button.active{color:var(--blue)}
 .inventory-tabs button.active:after{content:'';position:absolute;bottom:0;left:8px;right:8px;height:2px;background:var(--blue)}
 .inventory-subtable,.setting-demo-head{background:#fff;border:1px solid var(--line);border-radius:11px}

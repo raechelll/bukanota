@@ -10,7 +10,7 @@ button{font-family:inherit}
 .brand-mark b{position:absolute;right:-5px;bottom:-5px;width:14px;height:14px;background:#fff;border:2px solid var(--blue);color:var(--blue);font:800 8px/10px Manrope;border-radius:50%;text-align:center}
 .nav-links a,.nav-links button,.login-link{font-size:14px;font-weight:600;text-decoration:none;color:#3d4d66;background:none;border:0;cursor:pointer}
 .nav-links a:hover,.nav-links button:hover,.login-link:hover{color:var(--blue)}
-.button{display:inline-flex;justify-content:center;align-items:center;gap:16px;min-height:50px;padding:0 24px;border:0;border-radius:10px;text-decoration:none;color:#fff;background:var(--blue);font-weight:700;font-size:14px;box-shadow:0 10px 24px rgba(0,90,158),.2);transition:.2s ease;cursor:pointer}
+.button{display:inline-flex;justify-content:center;align-items:center;gap:16px;min-height:50px;padding:0 24px;border:0;border-radius:10px;text-decoration:none;color:#fff;background:var(--blue);font-weight:700;font-size:14px;box-shadow:0 10px 24px rgba(0,90,158,.2);transition:.2s ease;cursor:pointer}
 .button svg{width:17px}
 .button:hover{background:var(--blue-dark);transform:translateY(-1px)}
 .button.small{min-height:42px;padding:0 19px;border-radius:9px;box-shadow:none}
@@ -486,3 +486,56 @@ html[data-theme=dark] .admin-page-name h1,html[data-theme=dark] .module-title h2
 .toolbar-select-menu button:hover{background:#f1f6fc}
 .toolbar-select-menu button.active{background:var(--blue);color:#fff}
 .data-toolbar button.filter-on{border-color:var(--blue);color:var(--blue);background:#eef5fd}
+
+/* Dark mode: every data surface keeps readable contrast, including forms and modals. */
+html[data-theme=dark]{--ink:#eef5ff;--muted:#aebed2;--line:#2c3e55;--surface:#101b2a;background:#101824;color:#d7e3f2;color-scheme:dark}
+html[data-theme=dark] .admin-app,html[data-theme=dark] .admin-content,html[data-theme=dark] .module-page,html[data-theme=dark] .workspace{background:#101824;color:#d7e3f2}
+html[data-theme=dark] .admin-header,html[data-theme=dark] .data-card,html[data-theme=dark] .settings-card,html[data-theme=dark] .settings-layout>aside,html[data-theme=dark] .settings-layout>section,html[data-theme=dark] .profile-card,html[data-theme=dark] .workspace-metrics>div,html[data-theme=dark] .entity-stats>div,html[data-theme=dark] .inventory-kpis>div,html[data-theme=dark] .log-kpis>div,html[data-theme=dark] .sales-panel,html[data-theme=dark] .donut-panel,html[data-theme=dark] .quick-panel,html[data-theme=dark] .setting-demo-head,html[data-theme=dark] .deleted-tab,html[data-theme=dark] .backup-status,html[data-theme=dark] .schedule-card,html[data-theme=dark] .access-grid>aside,html[data-theme=dark] .access-grid>section,html[data-theme=dark] .outlet-card,html[data-theme=dark] .app-modal,html[data-theme=dark] .outlet-pop,html[data-theme=dark] .notification-pop,html[data-theme=dark] .profile-pop,html[data-theme=dark] .language-pop,html[data-theme=dark] .search-pop,html[data-theme=dark] .toolbar-select-menu{background:#172437!important;border-color:#31455f!important;color:#e6effb}
+html[data-theme=dark] .data-toolbar,html[data-theme=dark] .app-modal-header,html[data-theme=dark] .app-modal-footer,html[data-theme=dark] .table-footer,html[data-theme=dark] .module-tabs,html[data-theme=dark] .settings-tabs,html[data-theme=dark] .subtabs,html[data-theme=dark] .detail-grid,html[data-theme=dark] .detail-grid>div,html[data-theme=dark] .outlet-pop>div:first-child,html[data-theme=dark] .pop-title{border-color:#31455f!important}
+html[data-theme=dark] .data-head{background:#21334a!important;border-color:#31455f!important;color:#b9d1ec!important}
+html[data-theme=dark] .data-row,html[data-theme=dark] .data-row>span,html[data-theme=dark] .data-table .data-row>span,html[data-theme=dark] .list-table td{border-color:#31455f!important;color:#c8d7e8!important}
+html[data-theme=dark] .data-row:hover,html[data-theme=dark] .data-row:hover>span{background:#1d2d43!important;color:#eff6ff!important}
+html[data-theme=dark] .admin-page-name h1,html[data-theme=dark] .module-title h2,html[data-theme=dark] .module-title h3,html[data-theme=dark] .setting-demo-head h3,html[data-theme=dark] .outlet-detail-head h2,html[data-theme=dark] .data-row b,html[data-theme=dark] .data-row strong,html[data-theme=dark] .data-card h2,html[data-theme=dark] .data-card h3,html[data-theme=dark] .app-modal h3,html[data-theme=dark] .app-modal h4,html[data-theme=dark] .detail-grid strong,html[data-theme=dark] .crud-fields label{color:#f1f6ff!important}
+html[data-theme=dark] .module-page p,html[data-theme=dark] .data-card p,html[data-theme=dark] .data-row small,html[data-theme=dark] .table-footer,html[data-theme=dark] .app-modal p,html[data-theme=dark] .detail-grid span,html[data-theme=dark] .outlet-copy small,html[data-theme=dark] .outlet-pop small,html[data-theme=dark] .notification-pop small,html[data-theme=dark] .profile-pop small{color:#aebed2!important}
+html[data-theme=dark] input,html[data-theme=dark] select,html[data-theme=dark] textarea,html[data-theme=dark] .data-toolbar>button,html[data-theme=dark] .toolbar-select>button,html[data-theme=dark] .data-toolbar label,html[data-theme=dark] .outlet-selector,html[data-theme=dark] .admin-actions>button,html[data-theme=dark] .admin-actions>.header-popover>button,html[data-theme=dark] .table-footer button,html[data-theme=dark] .row-actions>button,html[data-theme=dark] .app-modal-footer button,html[data-theme=dark] .detail-actions button{background:#203149!important;border-color:#3a506d!important;color:#e5effb!important}
+html[data-theme=dark] .app-modal-footer .primary,html[data-theme=dark] .app-modal-footer .danger{color:#fff!important}
+html[data-theme=dark] input::placeholder,html[data-theme=dark] textarea::placeholder{color:#a6b8ce!important;opacity:1}
+html[data-theme=dark] select option{background:#203149;color:#edf5ff}
+html[data-theme=dark] .global-search,html[data-theme=dark] .global-search input{background:#203149!important;color:#edf5ff!important;border-color:#3a506d!important}
+html[data-theme=dark] .global-search input::placeholder{color:#a6b8ce!important}
+html[data-theme=dark] .outlet-copy b,html[data-theme=dark] .profile-pop b,html[data-theme=dark] .notification-pop b,html[data-theme=dark] .outlet-pop b,html[data-theme=dark] .search-pop b{color:#edf5ff!important}
+html[data-theme=dark] .outlet-pop>button,html[data-theme=dark] .search-pop button,html[data-theme=dark] .language-pop button{color:#d8e5f5!important}
+html[data-theme=dark] .outlet-pop>button:hover,html[data-theme=dark] .search-pop button:hover,html[data-theme=dark] .language-pop button:hover{background:#233852!important}
+html[data-theme=dark] .detail-identity>span,html[data-theme=dark] .outlet-pop>div:first-child>span,html[data-theme=dark] .pop-title>span{background:#223a58;color:#8fc1ff}
+html[data-theme=dark] .menu-card,html[data-theme=dark] .menu-card-foot,html[data-theme=dark] .product-card,html[data-theme=dark] .filter-row .chip,html[data-theme=dark] .dashboard-filters button:not(.primary),html[data-theme=dark] .panel-head button{background:#172437!important;border-color:#31455f!important;color:#deebfa!important}
+html[data-theme=dark] .menu-card section b,html[data-theme=dark] .menu-card-foot strong,html[data-theme=dark] .product-card b,html[data-theme=dark] .product-card strong{color:#f0f6ff!important}
+html[data-theme=dark] .menu-card-foot{border-top-color:#31455f!important}
+html[data-theme=dark] .menu-card>em{background:#203149!important;color:#63dfac!important}
+html[data-theme=dark] .menu-card>em.warning{color:#ffc875!important}
+html[data-theme=dark] .pop-wrap>button,html[data-theme=dark] .pop-menu{background:#203149!important;border-color:#3a506d!important;color:#e5effb!important}
+html[data-theme=dark] .pop-wrap>button.active,html[data-theme=dark] .pop-wrap>button:hover,html[data-theme=dark] .pop-menu button:hover{background:#29425f!important;color:#9bc9ff!important}
+html[data-theme=dark] .pop-menu button{color:#d8e5f5!important}
+html[data-theme=dark] .admin-sidebar nav button.active,html[data-theme=dark] .admin-sidebar .group-toggle.active{background:#1d6fd0!important;color:#fff!important}
+html[data-theme=dark] .admin-sidebar nav button.active svg,html[data-theme=dark] .admin-sidebar nav button.active span,html[data-theme=dark] .admin-sidebar nav button.active em{color:#fff!important}
+html[data-theme=dark] .module-tabs button.active,html[data-theme=dark] .settings-tabs button.active,html[data-theme=dark] .subtabs button.active{background:#203b59!important;color:#9bc9ff!important}
+html[data-theme=dark] .module-tabs button.active:after{background:#70b2ff!important}
+html[data-theme=dark] .admin-menu,html[data-theme=dark] .mobile-close,html[data-theme=dark] .app-modal-header>button,html[data-theme=dark] .image-uploader>div:nth-of-type(2) label,html[data-theme=dark] .image-uploader>div:nth-of-type(2) button{background:#203149!important;border-color:#3a506d!important;color:#e5effb!important}
+html[data-theme=dark] .admin-menu:hover,html[data-theme=dark] .header-popover>button:hover,html[data-theme=dark] .admin-actions>.language-switch:hover,html[data-theme=dark] .outlet-selector:hover,html[data-theme=dark] .app-modal-header>button:hover,html[data-theme=dark] .image-uploader>div:nth-of-type(2) label:hover,html[data-theme=dark] .image-uploader>div:nth-of-type(2) button:hover{background:#29425f!important;border-color:#50719a!important;color:#eef6ff!important}
+html[data-theme=dark] .image-uploader>small,html[data-theme=dark] .image-uploader>span{color:#b8c9dc!important}
+html[data-theme=dark] .upload-preview{background:#1b2c42!important;border-color:#43607f!important;color:#9cc9ff!important}
+html[data-theme=dark] .access-grid>aside>button.active{background:#203b59!important;color:#a9d1ff!important}
+html[data-theme=dark] .access-grid>aside>button.active>span{background:#2b4c70!important;color:#a9d1ff!important}
+html[data-theme=dark] .access-grid>aside>button:hover{background:#203149!important;color:#e9f3ff!important}
+html[data-theme=dark] .permission-matrix,html[data-theme=dark] .permission-row{border-color:#31455f!important}
+html[data-theme=dark] .permission-row.head{background:#203149!important;color:#b9d1ec!important}
+html[data-theme=dark] .permission-actions button{background:#203149!important;border-color:#3a506d!important;color:#e5effb!important}
+html[data-theme=dark] .permission-actions button:hover{background:#29425f!important;border-color:#50719a!important}
+html[data-theme=dark] .permission-actions .save-button{background:#1769c8!important;border-color:#1769c8!important;color:#fff!important}
+html[data-theme=dark] .outlet-pop>button.active{background:#29425f!important;color:#edf6ff!important}
+html[data-theme=dark] .outlet-pop>button.active>span{background:#315d8d!important;color:#eaf4ff!important}
+html[data-theme=dark] .inventory-subtable,html[data-theme=dark] .inventory-subtable .data-row,html[data-theme=dark] .inventory-tabs,html[data-theme=dark] .inventory-kpis>div{background:#172437!important;border-color:#31455f!important;color:#d8e5f5!important}
+html[data-theme=dark] .inventory-tabs button{color:#b6c7db!important}
+html[data-theme=dark] .inventory-tabs button.active{background:#203b59!important;color:#9bc9ff!important}
+html[data-theme=dark] .inventory-tabs button.active:after{background:#70b2ff!important}
+html[data-theme=dark] .inventory-subtable .data-row:hover{background:#1d2d43!important}
+html[data-theme=dark] .donut-chart:after{background:#172437!important}

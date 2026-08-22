@@ -4,6 +4,7 @@ import {
 } from 'lucide-react'
 import RowActions from '../components/RowActions'
 import '../styles/settings.css'
+import DeletedTab from '../components/DeletedTab'
 
 const INIT = {
   kategori: [['CAT-01','Kopi','Minuman berbasis kopi','12','Aktif'],['CAT-02','Makanan','Menu makanan utama','18','Aktif'],['CAT-03','Snack','Camilan dan pastry','9','Aktif']],
@@ -15,16 +16,17 @@ const TONES = ['tone-a', 'tone-b', 'tone-c', 'tone-d']
 export default function CatalogSettingsPage({ kind, openModal }) {
   const isKat = kind === 'kategori'
   const [rows, setRows] = useState(INIT[kind])
+  const [deletedRows, setDeletedRows] = useState([])
   const [q, setQ] = useState('')
   const [cat, setCat] = useState('Semua')
   const [catOpen, setCatOpen] = useState(false)
+  const [deleted, setDeleted] = useState(false)
   const add = () => openModal(isKat
     ? { type:'form', title:'Tambah kategori', kicker:'SETTING KATEGORI', fields:[{name:'name',label:'Nama kategori',required:true},{name:'description',label:'Deskripsi',type:'textarea',wide:true},{name:'status',label:'Status',type:'select',options:['Aktif','Nonaktif']}], success:'Kategori berhasil ditambahkan', onConfirm:(data)=>setRows(r=>[[`CAT-0${r.length+1}`,data.name,data.description||'-','0',data.status||'Aktif'],...r]) }
     : { type:'form', title:'Tambah menu POS', kicker:'SETTING MENU', size:'wide', image:true, imageLabel:'Gambar menu', aspect:4/3, fields:[{name:'name',label:'Nama menu',required:true},{name:'category',label:'Kategori',type:'select',options:['Kopi','Minuman','Makanan','Snack']},{name:'price',label:'Harga',type:'number'},{name:'order',label:'Sort order',type:'number'},{name:'status',label:'Status',type:'select',options:['Aktif','Nonaktif']}], success:'Menu berhasil ditambahkan', onConfirm:(data)=>setRows(r=>[[`MNU-0${r.length+1}`,data.name,data.category,`Rp ${Number(data.price||0).toLocaleString('id-ID')}`,data.status||'Aktif'],...r]) })
   const action = (row,a) => {
-    if (a==='detail') openModal({ type:'detail', title:`Detail ${isKat?'kategori':'menu'}`, name:row[1], initials:row[1].slice(0,2).toUpperCase(), data:{Kode:row[0],Nama:row[1],Status:row.at(-1)} })
-    if (a==='edit') add()
-    if (a==='delete') openModal({ type:'confirm', title:`Hapus ${isKat?'kategori':'menu'}`, message:`Hapus ${row[1]}?`, success:`${isKat?'Kategori':'Menu'} berhasil dihapus`, onConfirm:()=>setRows(r=>r.filter(x=>x[0]!==row[0])) })
+    if (a==='detail') return openModal({ type:'form', title:`Edit ${isKat?'kategori':'menu'}`, subtitle:'Edit data atau hapus dari panel yang sama.', size:'wide', image:!isKat, imageLabel:'Gambar menu', aspect:4/3, fields:isKat?[{name:'code',label:'Kode',value:row[0]},{name:'name',label:'Nama kategori',value:row[1],required:true},{name:'description',label:'Deskripsi',value:row[2],wide:true},{name:'status',label:'Status',type:'select',value:row.at(-1),options:['Aktif','Nonaktif']}]:[{name:'code',label:'Kode',value:row[0]},{name:'name',label:'Nama menu',value:row[1],required:true},{name:'category',label:'Kategori',type:'select',value:row[2],options:['Kopi','Minuman','Makanan','Snack']},{name:'price',label:'Harga',value:row[3]},{name:'status',label:'Status',type:'select',value:row.at(-1),options:['Aktif','Nonaktif']}], detailActions:[{key:'delete',label:'Hapus',tone:'danger'}],onDetailAction:(next)=>action(row,next),success:`${isKat?'Kategori':'Menu'} berhasil diperbarui` })
+    if (a==='delete') openModal({ type:'confirm', title:`Hapus ${isKat?'kategori':'menu'}`, message:`Hapus ${row[1]}?`, success:`${isKat?'Kategori':'Menu'} dipindahkan ke data terhapus`, onConfirm:()=>{setRows(r=>r.filter(x=>x[0]!==row[0]));setDeletedRows(r=>[...r,row])} })
   }
   const needle = q.trim().toLowerCase()
   const catOptions = isKat ? [] : ['Semua', ...new Set(INIT.menu.map(m => m[2]))]
@@ -35,7 +37,20 @@ export default function CatalogSettingsPage({ kind, openModal }) {
     return true
   })
   return <div className="module-page">
-    {isKat && <div className="setting-demo-head"><div><h3>Setting kategori</h3><p>Kelola kategori yang tampil pada POS.</p></div><button onClick={add}><Plus /> Tambah kategori</button></div>}
+    <div className="module-tabs catalog-tabs"><button className={!deleted?'active':''} onClick={()=>setDeleted(false)}>{isKat?'Kategori menu':'Menu POS'}</button><button className={deleted?'active':''} onClick={()=>setDeleted(true)}>Deleted</button></div>
+    {deleted ? <DeletedTab
+      title={isKat ? 'Kategori menu' : 'Menu POS'}
+      rows={deletedRows.map(r => [r[0], r[1]])}
+      openModal={openModal}
+      onRestore={(row) => {
+        const full = deletedRows.find(r => r[0] === row[0])
+        if (full) {
+          setDeletedRows(r => r.filter(x => x[0] !== row[0]))
+          setRows(r => [...r, full])
+        }
+      }}
+      onPermanentDelete={(row) => setDeletedRows(r => r.filter(x => x[0] !== row[0]))}
+    /> : <>{isKat && <div className="setting-demo-head"><div><h3>Setting kategori</h3><p>Kelola kategori yang tampil pada POS.</p></div><button onClick={add}><Plus /> Tambah kategori</button></div>}
     <div className="data-toolbar">
       <label><Search /><input placeholder={`Cari ${isKat?'kategori':'menu'}`} value={q} onChange={(e)=>setQ(e.target.value)} /></label>
       {!isKat && <div className="toolbar-select">
@@ -47,12 +62,12 @@ export default function CatalogSettingsPage({ kind, openModal }) {
       {!isKat && <button className="primary" onClick={add}><Plus /> Tambah menu</button>}
     </div>
     {isKat
-      ? <div className="data-table settings-crud-table"><div className="data-row data-head"><span>Kode</span><span>Nama kategori</span><span>Jumlah menu</span><span>Status</span><span>Aksi</span></div>{shown.map(r=><div className="data-row" key={r[0]}><span><b>{r[0]}</b></span><span>{r[1]}</span><span>{menuCount(r[1])} menu</span><span><em className={r.at(-1)==='Nonaktif'?'warning':''}>{r.at(-1)}</em></span><span><RowActions onAction={(a)=>action(r,a)} /></span></div>)}{!shown.length && <div className="data-row empty-rows"><span>Tidak ada kategori yang cocok.</span></div>}</div>
+      ? <div className="data-table settings-crud-table"><div className="data-row data-head"><span>Kode</span><span>Nama kategori</span><span>Jumlah menu</span><span>Status</span><span>Aksi</span></div>{shown.map(r=><div className="data-row" key={r[0]}><span data-label="Kode"><b>{r[0]}</b></span><span data-label="Nama kategori">{r[1]}</span><span data-label="Jumlah menu">{menuCount(r[1])} menu</span><span data-label="Status"><em className={r.at(-1)==='Nonaktif'?'warning':''}>{r.at(-1)}</em></span><span data-label="Aksi"><RowActions onAction={(a)=>action(r,a)} /></span></div>)}{!shown.length && <div className="data-row empty-rows"><span>Tidak ada kategori yang cocok.</span></div>}</div>
       : <div className="menu-cards">{shown.map((r,i)=><div className="menu-card" key={r[0]}>
           <span className={`menu-card-visual ${TONES[i%TONES.length]}`}>{r[1].slice(0,2).toUpperCase()}</span>
           <em className={r.at(-1)==='Nonaktif'?'warning':''}>{r.at(-1)}</em>
           <section><b>{r[1]}</b><small className="menu-cat-chip">{r[2]}</small></section>
           <div className="menu-card-foot"><strong>{r[3]}</strong><RowActions onAction={(a)=>action(r,a)} /></div>
-        </div>)}{!shown.length && <p className="catalog-empty">Tidak ada menu yang cocok dengan pencarian atau filter.</p>}</div>}
+        </div>)}{!shown.length && <p className="catalog-empty">Tidak ada menu yang cocok dengan pencarian atau filter.</p>}</div>}</>}
   </div>
 }

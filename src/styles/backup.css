@@ -2,15 +2,16 @@
 
 .backup-layout{display:grid;gap:14px}
 .backup-status{background:#fff;border:1px solid var(--line);border-radius:11px;padding:18px;display:flex;align-items:center;gap:13px}
-.backup-status>span{width:40px;height:40px;border-radius:9px;background:#e9f3ff;color:var(--blue);display:grid;place-items:center}
+.backup-status>span{width:40px;height:40px;border-radius:9px;background:#e9f3ff;color:var(--blue);display:grid;place-items:center;flex:none}
 .backup-status>span svg{width:19px}
 .backup-status small,.backup-status strong,.backup-status p{display:block}
 .backup-status small{font-size:8px;color:#8b98a9}
 .backup-status strong{font:700 12px Manrope;margin-top:3px}
 .backup-status p{font-size:8px;color:#8996a7;margin:4px 0 0}
-.backup-status>em{margin-left:auto;font-style:normal;color:#168461;background:#e7f6f0;border-radius:20px;padding:5px 9px;display:flex;align-items:center;gap:5px;font-size:8px}
+.backup-status>em{margin-left:auto;font-style:normal;color:#168461;background:#e7f6f0;border-radius:20px;padding:5px 9px;display:flex;align-items:center;gap:5px;font-size:8px;flex:none}
 .backup-status>em svg{width:11px}
-.backup-table .data-row{grid-template-columns:1.7fr 1fr .7fr .7fr 1fr}
+.backup-table .data-row{grid-template-columns:1.7fr 1fr .7fr .7fr 52px}
+.backup-table .data-row>span:last-child{justify-content:center}
 .backup-table .data-row>span:first-child svg{width:13px;color:var(--blue)}
 .schedule-card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:21px}
 .schedule-card>div:first-child{display:flex;align-items:center;gap:12px}
@@ -21,14 +22,23 @@
 .schedule-fields label{font-size:8px;font-weight:700;color:#56677e}
 .schedule-fields select,.schedule-fields input{display:block;width:100%;height:37px;border:1px solid #dce4ee;border-radius:7px;background:#fff;padding:0 9px;margin-top:7px;font-size:9px;color:#5f7088}
 @media(max-width:900px){
-  .backup-table,.deleted-table,.log-table{min-width:820px}
+  .backup-table,.deleted-table,.log-table{min-width:650px}
 }
 @media(max-width:720px){
-  .schedule-fields{grid-template-columns:1fr}
-  .backup-status{align-items:flex-start}
-  .backup-status>em{font-size:0}
+  .schedule-fields{grid-template-columns:1fr 1fr}
+  .backup-status{flex-wrap:wrap;gap:10px}
+  .backup-status>span{width:36px;height:36px}
+  .backup-status>em{font-size:0;padding:6px}
   .backup-status>em svg{margin:0}
-  .crud-fields input,.crud-fields select,.crud-fields textarea,.data-toolbar input,.catalog-head input,.status-select,.schedule-fields select,.schedule-fields input,.login-modal input{font-size:16px}
+  .backup-layout{gap:10px}
+  .schedule-card{padding:16px}
+  .schedule-fields{margin:16px 0;gap:8px}
+  .data-toolbar{flex-wrap:wrap;gap:6px}
+  .data-toolbar>button{height:36px;padding:0 8px;font-size:11px}
+}
+@media(max-width:430px){
+  .schedule-fields{grid-template-columns:1fr}
+  .backup-status{flex-direction:column;align-items:flex-start}
 }
 @media(min-width:721px){
   .schedule-fields select,.schedule-fields input{font-size:12px}
@@ -50,4 +60,17 @@
 .schedule-fields label{font-size:12px}
 @media(max-width:720px){
   .back-button,.pos-header-actions button,.module-title>button,.welcome-row button,.backup-status>em{font-size:0}
+}
+@media(max-width:720px){
+  .module-page:has(.backup-layout) .module-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;overflow:visible;margin-bottom:12px}
+  .module-page:has(.backup-layout) .module-tabs>button{min-width:0;padding:0 7px;justify-content:center;font-size:11px}
+  .module-page:has(.backup-layout) .module-tabs .add-wrap{grid-column:1/-1;margin:2px 0 0}
+  .module-page:has(.backup-layout) .module-tabs .add-wrap>button{width:100%;justify-content:center}
+}
+@media(max-width:720px){
+  .backup-table .data-row>span:nth-child(1):before{content:'Nama file'!important}
+  .backup-table .data-row>span:nth-child(2):before{content:'Waktu'!important}
+  .backup-table .data-row>span:nth-child(3):before{content:'Ukuran'!important}
+  .backup-table .data-row>span:nth-child(4):before{content:'Status'!important}
+  .backup-table .data-row>span:nth-child(5):before{content:'Aksi'!important}
 }

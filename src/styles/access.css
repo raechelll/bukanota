@@ -49,8 +49,12 @@
 .permission-actions button{height:34px;border:1px solid #dce5ef;background:#fff;color:#5f7087;border-radius:7px;padding:0 11px;font-size:8px}
 .permission-actions button.save-button{background:var(--blue);border-color:var(--blue);color:#fff;margin:0}
 @media(max-width:720px){
-  .permission-matrix{overflow-x:auto}
-  .permission-row{min-width:620px}
+  .permission-matrix{overflow:visible}
+  .permission-row{min-width:0;grid-template-columns:1fr repeat(5,36px);padding:0 7px}
+  .permission-row.head{display:none}
+  .permission-row:not(.head){min-height:48px}
+  .permission-actions{display:grid;grid-template-columns:1fr 1fr}
+  .permission-actions .save-button{grid-column:1/-1}
 }
 .setting-demo-head h3,.card-heading h3,.access-grid h3,.schedule-card h3{font-size:15px}
 .setting-section-title p,.toggle-settings p,.permission-head p{font-size:10.5px}

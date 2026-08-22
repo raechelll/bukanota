@@ -130,7 +130,7 @@
 .billing-toggle em{font-style:normal;color:var(--green);margin-left:5px}
 .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch}
 .pricing-grid article{position:relative;background:#fff;border:1px solid var(--line);border-radius:15px;padding:30px}
-.pricing-grid article.popular{border:2px solid var(--blue);box-shadow:0 22px 55px rgba(0,90,158),.12)}
+.pricing-grid article.popular{border:2px solid var(--blue);box-shadow:0 22px 55px rgba(0,90,158,.12)}
 .popular-label{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;padding:6px 12px;border-radius:20px;font-size:8px;font-weight:800;letter-spacing:.08em}
 .pricing-grid h3{font:700 19px Manrope;margin:0}
 .pricing-grid article>p{color:var(--muted);font-size:12px;margin:8px 0 28px}

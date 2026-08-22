@@ -5,7 +5,9 @@
 .entity-stats small,.entity-stats strong{display:block}
 .entity-stats small{font-size:7px;color:#8695a7}
 .entity-stats strong{font:700 16px Manrope;margin-top:9px}
-.entity-table .data-row{grid-template-columns:repeat(var(--columns),minmax(110px,1fr)) minmax(150px,max-content)}
+.entity-table{min-width:0}
+.entity-table .data-row{grid-template-columns:repeat(var(--columns),minmax(90px,1fr)) 52px}
+.entity-table .data-row>span:last-child{justify-content:center}
 
 /* halaman entity mengisi tinggi layar sampai bawah */
 .entity-module{display:flex;flex-direction:column;min-height:calc(100dvh - 80px);padding-bottom:28px}
@@ -28,10 +30,17 @@
 }
 @media(max-width:720px){
   .workspace-metrics.expanded,.entity-stats{grid-template-columns:1fr 1fr}
-  .settings-crud-table,.entity-table,.dash-table{min-width:760px}
+  .settings-crud-table,.entity-table,.dash-table{min-width:650px}
+  .entity-module{min-height:0;padding-bottom:20px}
+  .entity-module .data-card{min-height:0}
+  .entity-stats{gap:8px;margin-bottom:10px}
+  .entity-stats>div{padding:12px}
+  .pop-wrap>button{height:36px;font-size:11px;padding:0 8px}
+  .pop-wrap>button svg{width:12px}
 }
 @media(max-width:430px){
   .workspace-metrics.expanded,.entity-stats{grid-template-columns:1fr}
+  .entity-stats{gap:6px}
 }
 .entity-stats small{font-size:10px}
 .entity-stats strong{font-size:18px}

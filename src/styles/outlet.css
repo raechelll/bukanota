@@ -25,7 +25,8 @@
 .setting-demo-head p{font-size:8px;color:#8795a7;margin:4px 0 0}
 .setting-demo-head button{height:34px;border:0;background:var(--blue);color:#fff;border-radius:7px;padding:0 11px;font-size:8px;font-weight:700;display:flex;align-items:center;gap:5px}
 .setting-demo-head button svg{width:12px}
-.promo-table.with-actions .data-row,.outlet-demo-table .data-row{grid-template-columns:1fr 1.5fr 1fr .7fr 45px}
+.promo-table.with-actions .data-row,.outlet-demo-table .data-row{grid-template-columns:1fr 1.5fr 1fr .7fr 52px}
+.promo-table.with-actions .data-row>span:last-child,.outlet-demo-table .data-row>span:last-child{justify-content:center}
 .settings-tabs button{font-size:12px}
 .subtabs button,.settings-layout>aside button,.profile-tabs button{font-size:11px}
 .setting-demo-head h3,.card-heading h3,.access-grid h3,.schedule-card h3{font-size:15px}
@@ -59,3 +60,11 @@
 .outlet-detail-head h2{font:700 21px Manrope;color:var(--ink);letter-spacing:-.01em}
 .outlet-detail-head small{color:#8794a6;font-size:12.5px;margin-top:-4px}
 .outlet-empty{grid-column:1/-1;text-align:center;color:#8d9aab;font-size:14px;padding:34px 0}
+@media(max-width:720px){
+  .settings-card{overflow:visible}
+  .promo-table .data-row>span:nth-child(1):before,.outlet-demo-table .data-row>span:nth-child(1):before{content:'Kode'!important}
+  .promo-table .data-row>span:nth-child(2):before,.outlet-demo-table .data-row>span:nth-child(2):before{content:'Nama'!important}
+  .promo-table .data-row>span:nth-child(3):before,.outlet-demo-table .data-row>span:nth-child(3):before{content:'Nilai / Tanggal'!important}
+  .promo-table .data-row>span:nth-child(4):before,.outlet-demo-table .data-row>span:nth-child(4):before{content:'Status'!important}
+  .promo-table .data-row>span:nth-child(5):before,.outlet-demo-table .data-row>span:nth-child(5):before{content:'Aksi'!important}
+}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import '../styles/admin.css'
 import '../styles/tables.css'
 import {
-  Activity, Bell, BookOpen, Building2, Check, ChevronDown, ChevronRight, CreditCard, Database, Grid2X2, LogOut, Menu, Package, Settings2, ShoppingCart, Tags, Trash2, UserCog, UserRound, Users, UtensilsCrossed, X,
+  Activity, Bell, BookOpen, Building2, ChevronDown, ChevronRight, CreditCard, Database, Grid2X2, LogOut, Menu, Package, Settings2, ShoppingCart, Tags, UserCog, UserRound, Users, UtensilsCrossed, X,
 } from 'lucide-react'
 import Logo from '../components/Logo'
 import useHoverPopover from '../components/useHoverPopover'
@@ -16,22 +16,25 @@ const topMenu = [
 const adminMenu = [
   { label: 'Bisnis', items: [['Manajemen Stok', '/inventory', Package], ['Akuntansi & Pembukuan', '/accounting', BookOpen]] },
   { label: 'Data', items: [['Menu', '/menu', UtensilsCrossed], ['Kategori Menu', '/categories', Tags], ['User', '/users', UserRound], ['Outlet', '/outlet', Building2]] },
-  { label: 'Sistem', items: [['Log Aktivitas', '/logs', Activity], ['Backup', '/backup', Database], ['Hak Akses', '/access', UserCog], ['Setting', '/settings', Settings2], ['Deleted Data', '/deleted', Trash2]] },
+  { label: 'Sistem', items: [['Log Aktivitas', '/logs', Activity], ['Backup', '/backup', Database], ['Hak Akses', '/access', UserCog], ['Setting', '/settings', Settings2]] },
 ]
 
-function GlobalSearch({ navigate }) {
+const english = { Dashboard:'Dashboard', Transaksi:'Transactions', Membership:'Membership', Bisnis:'Business', Data:'Data', Sistem:'System', 'Manajemen Stok':'Inventory', 'Akuntansi & Pembukuan':'Accounting & Bookkeeping', Menu:'Menu', 'Kategori Menu':'Menu Categories', User:'Users', Outlet:'Outlets', 'Log Aktivitas':'Activity Log', Backup:'Backup', 'Hak Akses':'Access Control', Setting:'Settings', 'Outlet aktif':'Active outlet', 'Pilih outlet':'Select outlet', 'Data mengikuti outlet aktif':'Data follows the active outlet', 'Semua Outlet':'All Outlets', 'Ringkasan seluruh bisnis':'Business-wide overview', 'Cari produk, transaksi, member...':'Search products, transactions, members...', 'Tidak ada hasil untuk':'No results for', 'Buka halaman':'Open page', Notifikasi:'Notifications', '3 informasi terbaru':'3 latest updates', 'Stok hampir habis':'Stock is running low', 'Susu UHT tersisa 8 pcs':'8 pcs of UHT Milk remaining', 'Pembayaran berhasil':'Payment successful', 'Backup selesai':'Backup complete', 'Hari ini, 02:00 WIB':'Today, 02:00 WIB', Profile:'Profile', 'Informasi akun':'Account information', 'Logout dari akun':'Log out', 'Ganti tema':'Change theme', Bahasa:'Language', Indonesia:'Indonesian', English:'English' }
+const tr = (text, language) => language === 'en' ? (english[text] || text) : text
+
+function GlobalSearch({ navigate, language }) {
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
   const results = [...topMenu, ...adminMenu.flatMap(g => g.items)].filter(([name]) => name.toLowerCase().includes(query.trim().toLowerCase()))
   return <div className="global-search">
-    <input value={query} placeholder="Cari produk, transaksi, member..." onChange={(e)=>{setQuery(e.target.value); setOpen(true)}} onFocus={()=>setOpen(true)} onBlur={()=>setTimeout(()=>setOpen(false),120)} onKeyDown={(e)=>{ if(e.key==='Escape'){ setOpen(false); e.target.blur() } }} />
+    <input value={query} placeholder={tr('Cari produk, transaksi, member...', language)} onChange={(e)=>{setQuery(e.target.value); setOpen(true)}} onFocus={()=>setOpen(true)} onBlur={()=>setTimeout(()=>setOpen(false),120)} onKeyDown={(e)=>{ if(e.key==='Escape'){ setOpen(false); e.target.blur() } }} />
     {open && query.trim() ? <div className="search-pop">
-      {results.length ? results.map(([name, path, Icon]) => <button key={path} onMouseDown={()=>{navigate(path); setQuery(''); setOpen(false)}}><Icon /><section><b>{name}</b><small>Buka halaman {name}</small></section></button>) : <p>Tidak ada hasil untuk "{query}"</p>}
+      {results.length ? results.map(([name, path, Icon]) => <button key={path} onMouseDown={()=>{navigate(path); setQuery(''); setOpen(false)}}><Icon /><section><b>{tr(name, language)}</b><small>{tr('Buka halaman', language)} {tr(name, language)}</small></section></button>) : <p>{tr('Tidak ada hasil untuk', language)} "{query}"</p>}
     </div> : null}
   </div>
 }
 
-export default function AdminShell({ route, navigate, onLogout, children }) {
+export default function AdminShell({ route, navigate, onLogout, language = 'id', setLanguage, children }) {
   const [open, setOpen] = useState(false)
   const [expanded, setExpanded] = useState({ Bisnis: true, Data: true, Sistem: true })
   const [notifications, hoverNotifications, setNotifications] = useHoverPopover()
@@ -43,21 +46,22 @@ export default function AdminShell({ route, navigate, onLogout, children }) {
   const item = [...topMenu, ...adminMenu.flatMap(g => g.items)].filter(([, p]) => route === p || route.startsWith(p + '/')).sort((a, b) => b[1].length - a[1].length)[0]
   return <div className="admin-app">{open && <div className="sidebar-overlay" onClick={() => setOpen(false)}></div>}    <aside className={open ? 'admin-sidebar open' : 'admin-sidebar'}>
       <div className="admin-brand"><Logo light /><button className="mobile-close" onClick={() => setOpen(false)}><X /></button></div>
-      <div className="admin-nav-scroll"><nav>{topMenu.map(([name, path, Icon]) => <button data-tip={name} key={path} className={route === path || route.startsWith(path + '/') ? 'active' : ''} onClick={() => { navigate(path); setOpen(false) }}><Icon /><span>{name}</span>{name === 'Payment' && <em>12</em>}</button>)}</nav><div className="nav-sep"></div>{adminMenu.map(group => <div className="admin-group" key={group.label}><button className="group-toggle" onClick={() => setExpanded(s => ({ ...s, [group.label]: !s[group.label] }))}><span>{group.label}</span><ChevronDown className={expanded[group.label] ? 'open' : ''} /></button>{expanded[group.label] && <nav>{group.items.map(([name, path, Icon]) => <button data-tip={name} key={path} className={route === path || route.startsWith(path + '/') ? 'active' : ''} onClick={() => { navigate(path); setOpen(false) }}><Icon /><span>{name}</span>{name === 'Payment' && <em>12</em>}</button>)}</nav>}</div>)}      </div>
+      <div className="admin-nav-scroll"><nav>{topMenu.map(([name, path, Icon]) => <button data-tip={tr(name, language)} key={path} className={route === path || route.startsWith(path + '/') ? 'active' : ''} onClick={() => { navigate(path); setOpen(false) }}><Icon /><span>{tr(name, language)}</span>{name === 'Payment' && <em>12</em>}</button>)}</nav><div className="nav-sep"></div>{adminMenu.map(group => <div className="admin-group" key={group.label}><button className="group-toggle" onClick={() => setExpanded(s => ({ ...s, [group.label]: !s[group.label] }))}><span>{tr(group.label, language)}</span><ChevronDown className={expanded[group.label] ? 'open' : ''} /></button>{expanded[group.label] && <nav>{group.items.map(([name, path, Icon]) => <button data-tip={tr(name, language)} key={path} className={route === path || route.startsWith(path + '/') ? 'active' : ''} onClick={() => { navigate(path); setOpen(false) }}><Icon /><span>{tr(name, language)}</span>{name === 'Payment' && <em>12</em>}</button>)}</nav>}</div>)}      </div>
     </aside>
     <main className="admin-content">
       <header className="admin-header">
         <button className="admin-menu" onClick={() => setOpen(true)}><Menu /></button>
-        <div className="admin-page-name"><small><button className="crumb-home" onClick={() => navigate('/dashboard')}>Home</button> / {item?.[0] || 'Dashboard'}</small><h1>{item?.[0] || 'Dashboard'}</h1></div>
-        <GlobalSearch navigate={navigate} />
+        <div className="admin-page-name"><small><button className="crumb-home" onClick={() => navigate('/dashboard')}>Home</button> / {tr(item?.[0] || 'Dashboard', language)}</small><h1>{tr(item?.[0] || 'Dashboard', language)}</h1></div>
+        <GlobalSearch navigate={navigate} language={language} />
         <div className="admin-actions">
           <div className="header-popover outlet-popover" {...hoverOutlet}>
-            <button className="outlet-selector" onClick={() => setOutletOpen(!outletOpen)}><span className="outlet-icon"><Building2 /></span><span className="outlet-copy"><small>Outlet aktif</small><b>{selectedOutlet.replace('Outlet ', '')}</b></span><ChevronDown /></button>
-            {outletOpen && <div className="outlet-pop"><div><span><Building2 /></span><section><b>Pilih outlet</b><small>Data mengikuti outlet aktif</small></section></div>{['Outlet Kemang','Outlet Cilandak','Semua Outlet'].map(name => <button className={selectedOutlet === name ? 'active' : ''} key={name} onClick={() => { setSelectedOutlet(name); setOutletOpen(false) }}><span>{name.slice(0,2).toUpperCase()}</span><section><b>{name}</b><small>{name === 'Semua Outlet' ? 'Ringkasan seluruh bisnis' : 'Online · Jakarta'}</small></section>{selectedOutlet === name && <Check />}</button>)}</div>}
+            <button className="outlet-selector" onClick={() => setOutletOpen(!outletOpen)}><span className="outlet-icon"><Building2 /></span><span className="outlet-copy"><small>{tr('Outlet aktif', language)}</small><b>{selectedOutlet.replace('Outlet ', '')}</b></span><ChevronDown /></button>
+            {outletOpen && <div className="outlet-pop"><div><span><Building2 /></span><section><b>{tr('Pilih outlet', language)}</b><small>{tr('Data mengikuti outlet aktif', language)}</small></section></div>{['Outlet Kemang','Outlet Cilandak','Semua Outlet'].map(name => <button className={selectedOutlet === name ? 'active' : ''} key={name} onClick={() => { setSelectedOutlet(name); setOutletOpen(false) }}><span>{name.slice(0,2).toUpperCase()}</span><section><b>{tr(name, language)}</b><small>{name === 'Semua Outlet' ? tr('Ringkasan seluruh bisnis', language) : 'Online · Jakarta'}</small></section></button>)}</div>}
           </div>
-          <button className="theme-button" onClick={() => setDark(!dark)} title="Ganti tema">{dark ? '☀' : '◐'}</button>
-          <div className="header-popover" {...hoverNotifications}><button onClick={() => setNotifications(!notifications)}><Bell /><i></i></button>{notifications && <div className="notification-pop"><div className="pop-title"><span><Bell /></span><section><b>Notifikasi</b><small>3 informasi terbaru</small></section></div><p><Package /><span><b>Stok hampir habis</b><small>Susu UHT tersisa 8 pcs</small></span></p><p><CreditCard /><span><b>Pembayaran berhasil</b><small>INV-1042 · Rp 162.000</small></span></p><p><Database /><span><b>Backup selesai</b><small>Hari ini, 02:00 WIB</small></span></p></div>}</div>
-          <div className="header-popover" {...hoverProfile}><button className="header-avatar" onClick={() => setProfile(!profile)}>AD</button>{profile && <div className="profile-pop"><div className="profile-pop-head"><span>AD</span><section><b>Admin Demo</b><small>admin@gmail.com</small><em>Super Admin</em></section></div><nav><button onClick={() => navigate('/profile')}><span><UserRound /></span><section><b>Profile</b><small>Informasi akun</small></section><ChevronRight /></button></nav><button className="profile-logout" onClick={onLogout}><LogOut /> Logout dari akun</button></div>}</div>
+          <button className="language-switch" title={tr('Bahasa', language)} onClick={() => setLanguage(language === 'id' ? 'en' : 'id')}>{language === 'id' ? 'ID' : 'EN'}</button>
+          <button className="theme-button" onClick={() => setDark(!dark)} title={tr('Ganti tema', language)}>{dark ? '☀' : '◐'}</button>
+          <div className="header-popover" {...hoverNotifications}><button onClick={() => setNotifications(!notifications)} aria-label={tr('Notifikasi', language)}><Bell /><i></i></button>{notifications && <div className="notification-pop"><div className="pop-title"><span><Bell /></span><section><b>{tr('Notifikasi', language)}</b><small>{tr('3 informasi terbaru', language)}</small></section></div><p><Package /><span><b>{tr('Stok hampir habis', language)}</b><small>{tr('Susu UHT tersisa 8 pcs', language)}</small></span></p><p><CreditCard /><span><b>{tr('Pembayaran berhasil', language)}</b><small>INV-1042 · Rp 162.000</small></span></p><p><Database /><span><b>{tr('Backup selesai', language)}</b><small>{tr('Hari ini, 02:00 WIB', language)}</small></span></p></div>}</div>
+          <div className="header-popover" {...hoverProfile}><button className="header-avatar" onClick={() => setProfile(!profile)} aria-label={tr('Profile', language)}>AD</button>{profile && <div className="profile-pop"><div className="profile-pop-head"><span>AD</span><section><b>Admin Demo</b><small>admin@gmail.com</small><em>Super Admin</em></section></div><nav><button onClick={() => navigate('/profile')}><span><UserRound /></span><section><b>{tr('Profile', language)}</b><small>{tr('Informasi akun', language)}</small></section><ChevronRight /></button></nav><button className="profile-logout" onClick={onLogout}><LogOut /> {tr('Logout dari akun', language)}</button></div>}</div>
         </div>
       </header>
       {children}

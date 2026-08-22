@@ -6,7 +6,8 @@
 .inventory-kpis small,.inventory-kpis strong,.log-kpis small,.log-kpis strong{display:block}
 .inventory-kpis small,.log-kpis small{font-size:8px;color:#8a96a7}
 .inventory-kpis strong,.log-kpis strong{font:700 15px Manrope;margin-top:3px}
-.log-table .data-row{grid-template-columns:.7fr 1fr .7fr 1.8fr 1fr minmax(120px,max-content)}
+.log-table .data-row{grid-template-columns:.7fr 1fr .7fr 1.8fr 1fr 52px}
+.log-table .data-row>span:last-child{justify-content:center}
 .log-table .data-row>span:first-child svg{width:12px}
 .log-table em{font-weight:700}
 .log-table em.log-login{background:#e8f2ff;color:var(--blue)}
@@ -14,12 +15,26 @@
 .log-table em.log-backup{background:#eee9fb;color:#7150bc}
 .log-table em.log-restore{background:#e7f6f0;color:#168461}
 @media(max-width:900px){
-  .backup-table,.deleted-table,.log-table{min-width:820px}
+  .backup-table,.deleted-table,.log-table{min-width:650px}
   .inventory-kpis,.log-kpis{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:720px){
+  .inventory-kpis,.log-kpis{grid-template-columns:1fr 1fr}
+  .inventory-kpis>div,.log-kpis>div{padding:12px;gap:10px}
+  .inventory-kpis>div>svg,.log-kpis>div>svg{width:30px;height:30px;padding:8px}
+  .data-toolbar{flex-wrap:wrap;gap:6px}
+  .data-toolbar>button{height:36px;padding:0 8px;font-size:11px}
+}
+@media(max-width:720px){
+  .log-table .data-row>span:nth-child(1):before{content:'Waktu'!important}
+  .log-table .data-row>span:nth-child(2):before{content:'Pengguna'!important}
+  .log-table .data-row>span:nth-child(3):before{content:'Aktivitas'!important}
+  .log-table .data-row>span:nth-child(4):before{content:'Detail'!important}
+  .log-table .data-row>span:nth-child(5):before{content:'IP Address'!important}
+  .log-table .data-row>span:nth-child(6):before{content:'Aksi'!important}
+}
+@media(max-width:430px){
   .inventory-kpis,.log-kpis{grid-template-columns:1fr}
-  .inventory-kpis>div,.log-kpis>div{padding:12px}
 }
 .log-table.with-actions .data-row{grid-template-columns:.7fr 1fr .7fr 1.8fr 1fr minmax(120px,max-content)}
 .inventory-kpis small,.log-kpis small{font-size:10.5px}
